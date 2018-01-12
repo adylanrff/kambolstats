@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
+
 """
 
 import os
@@ -25,7 +26,7 @@ SECRET_KEY = '(y+r@yh26a$yaycanu54er-povtkrm4e9siio_t8t1c9lxoadt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'stats',
 ]
 
 MIDDLEWARE = [
@@ -102,7 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -112,7 +113,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/

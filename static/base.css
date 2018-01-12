@@ -1,0 +1,22 @@
+.main {
+  margin: 0 auto;
+  margin-top: 100px;
+  width:80%;
+}
+
+
+.menu{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+
+.menu_btn {
+  width: 100%;
+  margin:0 auto;
+  margin-top: 50px;
+  min-height: 200px;
+}
+
+.btn_scoreboard {
+  grid-column: span 2;
+}
