@@ -4,7 +4,6 @@
   width:80%;
 }
 
-
 .menu{
   display: grid;
   grid-template-columns: repeat(2,1fr);
@@ -17,6 +16,11 @@
   min-height: 200px;
 }
 
-.btn_scoreboard {
+.btn_menu_scoreboard {
   grid-column: span 2;
+}
+
+.scoreboard {
+  width:100%;
+  text-align: center;
 }
