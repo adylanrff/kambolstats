@@ -1,9 +1,13 @@
+/*base*/
 .main {
   margin: 0 auto;
   margin-top: 100px;
   width:80%;
 }
 
+
+/*home*/
+/*----------------------*/
 .menu{
   display: grid;
   grid-template-columns: repeat(2,1fr);
@@ -19,8 +23,35 @@
 .btn_menu_scoreboard {
   grid-column: span 2;
 }
+/*----------------------*/
 
+/*Scoreboard*/
+/*----------------------*/
 .scoreboard {
   width:100%;
   text-align: center;
+}
+/*----------------------*/
+
+/*match in game*/
+.match_in_game {
+  display: grid;
+  min-height: 500px;
+  grid-template-columns: repeat(12,1fr);
+}
+
+.match_header {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+}
+
+.match_header .home_team, .match_header .away_team {
+  min-height: 200px;
+  background: #d6dd2f;
+  grid-column: span 2;
+}
+
+.match_header .match_details {
+  background: #bb180c;
 }

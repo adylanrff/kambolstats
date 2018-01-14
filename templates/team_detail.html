@@ -24,15 +24,16 @@
   <tbody>
     {% for player in player_list %}
     <tr>
-    <td><a href="#">{{player.NIM}}</a></td>
-    <td><a href="#">{{player.name}}</a></td>
-    <td><a href="#">{{player.goals}}</a></td>
-    <td><a href="#">{{player.shoot}}</a></td>
-    <td><a href="#">{{player.pass_succees}}</a></td>
-    <td><a href="#">{{player.pass_unsuccess}}</a></td>
-      <!-- <td>{{team.points}}</td> -->
+      <td>{{player.NIM}}</td>
+      <td>{{player.name}}</td>
+      <td>{{player.goals}}</td>
+      <td>{{player.shoot}}</td>
+      <td>{{player.pass_succees}}</td>
+      <td>{{player.pass_unsuccess}}</td>
     </tr>
+
     {% endfor %}
+    <!-- <button>DELETE</button> -->
   </tbody>
 </table>
 {% endblock content %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView, DetailView
 
-from .models import Player, Team
+from .models import Player, Team, Match
 # Create your views here.
 
 class HomeView(TemplateView):
@@ -19,6 +19,17 @@ class TeamDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['player_list'] = Player.objects.filter(team = self.object) 
+        context['player_list'] = Player.objects.filter(team = self.object)
         return context
-# class TeamDetailView(ListView):
+
+class MatchInGameView(DetailView):
+    model = Match
+    context_object_name = 'match'
+    template_name = 'match_in_game.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['home_team'] = Team.objects.get(id = self.object.home_team.id)
+        context['away_team'] = Team.objects.get(id = self.object.away_team.id)
+        return context
+        # class TeamDetailView(ListView):
