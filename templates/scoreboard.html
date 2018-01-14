@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="main">
 
   <h1 class="text-center mb-5">SCOREBOARD</h1>
   <div class="table-responsive">
@@ -15,9 +14,9 @@
     </thead>
 
     <tbody>
-      {% for team in object_list %}
+      {% for team in team_list %}
       <tr>
-      <td><a href="#">{{team.name}}</a></td>
+      <td><a href="{% url 'team_detail' team.pk %}">{{team.name}}</a></td>
         <td>{{team.points}}</td>
       </tr>
       {% endfor %}
@@ -25,7 +24,5 @@
   </table>
 
   </div>
-
-</div>
 
 {% endblock content %}

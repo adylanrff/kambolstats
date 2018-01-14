@@ -7,8 +7,10 @@ class TeamAdmin(admin.ModelAdmin):
 class PlayerAdmin(admin.ModelAdmin):
     list_display=['NIM','name','goals','shoot','pass_succees','pass_unsuccess']
 
+class MatchAdmin(admin.ModelAdmin):
+    list_display = ['id','home_team','away_team','match_date']
 
 # Register your models here.
-admin.site.register(Match)
+admin.site.register(Match, MatchAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Player, PlayerAdmin)

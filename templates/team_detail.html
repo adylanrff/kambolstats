@@ -1,1 +1,38 @@
-{%%}
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="team_logo">
+
+</div>
+
+<h1>Name: {{ team.name }}</h1>
+<h1>Points: {{ team.points }}</h1>
+
+<table class="player_list table table-striped table-bordered table-sm">
+
+  <thead class="thead-dark">
+    <tr>
+      <th>NIM</th>
+      <th>Name</th>
+      <th>Goals</th>
+      <th>Shoot</th>
+      <th>Pass Success</th>
+      <th>Pass Unsuccess</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for player in player_list %}
+    <tr>
+    <td><a href="#">{{player.NIM}}</a></td>
+    <td><a href="#">{{player.name}}</a></td>
+    <td><a href="#">{{player.goals}}</a></td>
+    <td><a href="#">{{player.shoot}}</a></td>
+    <td><a href="#">{{player.pass_succees}}</a></td>
+    <td><a href="#">{{player.pass_unsuccess}}</a></td>
+      <!-- <td>{{team.points}}</td> -->
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}
