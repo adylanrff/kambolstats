@@ -30,6 +30,8 @@ class MatchInGameView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['home_team'] = Team.objects.get(id = self.object.home_team.id)
+        context['home_team_players'] = Player.objects.filter(team=context['home_team'])
         context['away_team'] = Team.objects.get(id = self.object.away_team.id)
+        context['away_team_players'] = Player.objects.filter(team=context['away_team'])
         return context
         # class TeamDetailView(ListView):

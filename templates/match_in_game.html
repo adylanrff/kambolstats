@@ -1,22 +1,75 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-  <div class="match_in_game">
-    <div class="match_header">
-
+<div class="match_in_game">
       <div class="home_team">
-        <h1>{{ home_team.name }}</h1>
+
+        <div class="team_detail">
+          <h1 class="text-center">{{ home_team.name }}</h1>
+        </div>
+
+        <div class="team_players">
+          <table class="table table-dark text-center table-sm">
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>Goals</td>
+                <td>Shoot</td>
+                <td>Pass Success</td>
+                <td>Pass Unsuccess</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for player in home_team_players %}
+              <tr>
+                <td>{{player.name}}</td>
+                <td><button class="button-min">-</button><input type="number" value="{{player.goals}}"></input><button class="button-plus">+</button></td>
+                <td><button>-</button><span>{{player.shoot}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.pass_succees}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.pass_unsuccess}}</span><button>+</button></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
       </div>
-      <div class="match_details">
+      <div class="away_team ">
+
+        <div class="team_detail">
+          <h1 class="text-center">{{ away_team.name }}</h1>
+        </div>
+
+        <div class="team_players">
+          <table class="table table-dark text-center table-sm">
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>Goals</td>
+                <td>Shoot</td>
+                <td>Pass Success</td>
+                <td>Pass Unsuccess</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for player in away_team_players %}
+              <tr>
+                <td>{{player.name}}</td>
+                <td><button>-</button><span>{{player.goals}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.shoot}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.pass_succees}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.pass_unsuccess}}</span><button>+</button></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
 
       </div>
 
-      <div class="away_team">
-
-      </div>
-
-    </div>
   </div>
 
 {% endblock content %}
