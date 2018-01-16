@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView, DetailView
-
+from django.http import HttpResponse
 from .models import Player, Team, Match
 # Create your views here.
 
@@ -35,3 +35,14 @@ class MatchInGameView(DetailView):
         context['away_team_players'] = Player.objects.filter(team=context['away_team'])
         return context
         # class TeamDetailView(ListView):
+
+def update_player(request):
+    if request.method == 'POST':
+        nim = request.POST['nim'];
+        stat_type = request.POST['stat_type']
+        value = request.POST['value']
+        
+
+        Player.objects.filter(NIM = nim).update(goals = value)
+
+        return HttpResponse('')

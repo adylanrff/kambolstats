@@ -24,7 +24,7 @@
               {% for player in home_team_players %}
               <tr>
                 <td>{{player.name}}</td>
-                <td><button class="button-min">-</button><input type="number" value="{{player.goals}}"></input><button class="button-plus">+</button></td>
+                <td><button class="button-min goal" id="goal-min-{{player.pk}}">-</button><span id="goal-val-{{player.pk}}">{{player.goals}}</span><button class="button-plus goal" id="goal-plus-{{player.pk}}">+</button></td>
                 <td><button>-</button><span>{{player.shoot}}</span><button>+</button></td>
                 <td><button>-</button><span>{{player.pass_succees}}</span><button>+</button></td>
                 <td><button>-</button><span>{{player.pass_unsuccess}}</span><button>+</button></td>
@@ -57,7 +57,7 @@
               {% for player in away_team_players %}
               <tr>
                 <td>{{player.name}}</td>
-                <td><button>-</button><span>{{player.goals}}</span><button>+</button></td>
+                <td><button class="button-min goal" id="goal-min-{{player.pk}}">-</button><span id="goal-val-{{player.pk}}">{{player.goals}}</span><button class="button-plus" id="goal-plus-{{player.pk}}">+</button></td>
                 <td><button>-</button><span>{{player.shoot}}</span><button>+</button></td>
                 <td><button>-</button><span>{{player.pass_succees}}</span><button>+</button></td>
                 <td><button>-</button><span>{{player.pass_unsuccess}}</span><button>+</button></td>
@@ -73,3 +73,77 @@
   </div>
 
 {% endblock content %}
+
+{% block script %}
+  
+  <script> 
+   $(document).ready(function(){
+  
+    var $goal_button = $(".goal");
+
+    $goal_button.click(function() {
+      var id = $(this).attr("id"); 
+      
+      {% for player in home_team_players %}
+      
+      if (id === "goal-min-{{player.pk}}"){
+        var $goal_text = $("#goal-val-{{player.pk}}");
+        var nim_number = {{player.pk}};
+        var goal = parseInt($goal_text.text());
+        console.log("minus");
+        goal--;
+      }
+      else if (id === "goal-plus-{{player.pk}}") {
+        var goal = parseInt($("#goal-val-{{player.pk}}").text());
+        goal++;
+      };
+
+      {% endfor %}
+
+      $.ajax({
+        url: '/players/update/',
+        type: 'POST',
+        data: {
+          nim: nim_number,
+          stat_type: 'goal',
+          value: goal,
+          csrfmiddlewaretoken : '{{ csrf_token }}'
+        },
+      })
+      .done(function() {
+        $goal_text.text(goal);
+        console.log("success");
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log(goal);
+        console.log("complete");
+      });
+
+    });  
+
+
+
+  {% for player in away_team_players %}
+  // <!-- GOAL BUTTON -->
+  // <!-- Goal min -->
+
+    $("#goal-min-{{player.pk}}").click(function(){
+      goal--;
+      $("#goal-val-{{player.pk}}").text(goal);
+    });   
+  // <!-- Goal plus -->
+
+    $("#goal-plus-{{player.pk}}").click(function(){
+      goal++;
+      $("#goal-val-{{player.pk}}").text(goal);
+    });   
+
+  }); 
+  {% endfor %}
+  </script>
+
+{% endblock script  %}
+
