@@ -40,9 +40,20 @@ def update_player(request):
     if request.method == 'POST':
         nim = request.POST['nim'];
         stat_type = request.POST['stat_type']
-        value = request.POST['value']
+        operation = request.POST['operation']
         
 
-        Player.objects.filter(NIM = nim).update(goals = value)
+        player_obj = Player.objects.get(NIM = nim)
+        player_update = Player.objects.filter(NIM = nim)
+
+        update_player_stat(stat_type,operation, player_obj, player_update)
 
         return HttpResponse('')
+
+
+def update_player_stat(stat_type, operation, player_obj, player_update):
+    if (stat_type == 'goal'):
+        value = player_obj.goals
+        if (operation =='min'):
+            value-=1
+        player_update.update(goals=value)

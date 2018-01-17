@@ -91,11 +91,12 @@
         var nim_number = {{player.pk}};
         var goal = parseInt($goal_text.text());
         console.log("minus");
-        goal--;
+        var operator = 'min';
       }
+
       else if (id === "goal-plus-{{player.pk}}") {
         var goal = parseInt($("#goal-val-{{player.pk}}").text());
-        goal++;
+        var operator = 'plus';
       };
 
       {% endfor %}
@@ -106,7 +107,7 @@
         data: {
           nim: nim_number,
           stat_type: 'goal',
-          value: goal,
+          operation : operator,
           csrfmiddlewaretoken : '{{ csrf_token }}'
         },
       })
