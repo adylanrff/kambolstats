@@ -2,7 +2,7 @@
 .main {
   margin: 0 auto;
   margin-top: 100px;
-  width:90%;
+  width:100%;
 }
 
 /*home*/
@@ -41,18 +41,19 @@
 
 
 .match_in_game .home_team, .match_in_game .away_team {
+  padding :8px;
   min-height: 200px;
   height: 100%;
   background: #d6dd2f;
   grid-column: span 12;
   display: grid;
-  grid-template-columns: repeat(5,1fr);
+  grid-template-columns: repeat(12,1fr);
 }
-
+/*
 .team_detail {
-  grid-column: span 1;
-}
+  grid-column: span 0;
+}*/
 
 .team_players {
-  grid-column : span 4;
+  grid-column : span 12;
 }

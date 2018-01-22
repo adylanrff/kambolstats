@@ -87,7 +87,6 @@ class Player(models.Model):
     goal = models.IntegerField(default=0)
     pass_complete = models.IntegerField(default=0)
     pass_incomplete = models.IntegerField(default=0)
-    ball_possession = models.IntegerField(default=0)
     shot_on_target = models.IntegerField(default=0)
     shot_off_target = models.IntegerField(default=0)
     shot_percentage = models.DecimalField(max_digits = 4, decimal_places = 2, default=0)
