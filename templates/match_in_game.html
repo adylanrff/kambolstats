@@ -24,10 +24,10 @@
               {% for player in home_team_players %}
               <tr>
                 <td>{{player.name}}</td>
-                <td><button class="button-min goal" id="goal-min-{{player.pk}}">-</button><span id="goal-val-{{player.pk}}">{{player.goals}}</span><button class="button-plus goal" id="goal-plus-{{player.pk}}">+</button></td>
-                <td><button>-</button><span>{{player.shoot}}</span><button>+</button></td>
-                <td><button>-</button><span>{{player.pass_succees}}</span><button>+</button></td>
-                <td><button>-</button><span>{{player.pass_unsuccess}}</span><button>+</button></td>
+                <td><button class="button-min goal" id="goal-min-{{player.pk}}">-</button><span id="goal-val-{{player.pk}}">{{player.goal}}</span><button class="button-plus goal" id="goal-plus-{{player.pk}}">+</button></td>
+                <td><button>-</button><span>{{player.shot_on_target}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.pass_complete}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.pass_incomplete}}</span><button>+</button></td>
               </tr>
               {% endfor %}
             </tbody>
@@ -57,10 +57,10 @@
               {% for player in away_team_players %}
               <tr>
                 <td>{{player.name}}</td>
-                <td><button class="button-min goal" id="goal-min-{{player.pk}}">-</button><span id="goal-val-{{player.pk}}">{{player.goals}}</span><button class="button-plus" id="goal-plus-{{player.pk}}">+</button></td>
-                <td><button>-</button><span>{{player.shoot}}</span><button>+</button></td>
-                <td><button>-</button><span>{{player.pass_succees}}</span><button>+</button></td>
-                <td><button>-</button><span>{{player.pass_unsuccess}}</span><button>+</button></td>
+                <td><button class="button-min goal" id="goal-min-{{player.pk}}">-</button><span id="goal-val-{{player.pk}}">{{player.goal}}</span><button class="button-plus" id="goal-plus-{{player.pk}}">+</button></td>
+                <td><button>-</button><span>{{player.shot_on_target}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.pass_complete}}</span><button>+</button></td>
+                <td><button>-</button><span>{{player.pass_incomplete}}</span><button>+</button></td>
               </tr>
               {% endfor %}
             </tbody>
@@ -96,7 +96,7 @@
 
       else if (id === "goal-plus-{{player.pk}}") {
         var goal = parseInt($("#goal-val-{{player.pk}}").text());
-        var operator = 'plus';
+        var operator = 'plus'
       };
 
       {% endfor %}

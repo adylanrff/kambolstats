@@ -53,7 +53,7 @@ def update_player(request):
 
 def update_player_stat(stat_type, operation, player_obj, player_update):
     if (stat_type == 'goal'):
-        value = player_obj.goals
+        value = player_obj.goal
         if (operation =='min'):
             value-=1
-        player_update.update(goals=value)
+        player_update.update(goal=value)
