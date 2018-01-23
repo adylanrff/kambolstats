@@ -41,17 +41,22 @@ def update_player(request):
         nim = request.POST['nim']
         stat_type = request.POST['stat_type']
         operation = request.POST['operation']
+        match_id = request.POST['match_id']
+        side = request.POST['side']
 
         player_obj = Player.objects.get(NIM = nim)
         player_update = Player.objects.filter(NIM = nim)
         
+        match_obj = Match.objects.get(id=match_id)
+        match_update = Match.objects.filter(id = match_id)
+
         update_player_stat(stat_type,operation, player_obj, player_update)
+        update_match_stat(stat_type,operation,match_obj,match_update,side)
 
         return HttpResponse('')
 
 
 def update_player_stat(stat_type, operation, player_obj, player_update):
-    
     if (operation =='min'):
         value= -1
     elif (operation =='plus'):
@@ -63,17 +68,49 @@ def update_player_stat(stat_type, operation, player_obj, player_update):
         value += player_obj.goal    
         player_update.update(goal=value)
 
+    elif (stat_type == 'pass_complete'):
+        value+= player_obj.pass_complete
+        player_update.update(pass_complete=value)
+
+    elif (stat_type == 'pass_incomplete'):
+        value+= player_obj.pass_incomplete
+        player_update.update(pass_incomplete=value)
+
     elif (stat_type == 'shot_on_target'):
         value+= player_obj.shot_on_target
         player_update.update(shot_on_target=value)
+
+        shot_on_target = value
+        shot_off_target = player_obj.shot_off_target
+
+        if (shot_on_target+shot_off_target>0):
+            percentage = (shot_on_target / (shot_on_target+shot_off_target)) *100
+        else:
+            percentage = 0
+
+        print(shot_on_target)
+        print(shot_off_target)
+        print(percentage)
+
+        player_update.update(shot_percentage=percentage)
 
     elif (stat_type == 'shot_off_target'):
         value += player_obj.shot_off_target
         player_update.update(shot_off_target=value)
 
-    elif (stat_type == 'shot_percentage'):
-        value += player_obj.shot_percentage
-        player_update.update(shot_percentage=value)
+        shot_on_target = player_obj.shot_on_target
+        shot_off_target = value
+
+        if (shot_on_target+shot_off_target>0):
+            percentage = (shot_on_target / (shot_on_target+shot_off_target)) *100
+        else:
+            percentage = 0
+
+        print(shot_on_target)
+        print(shot_off_target)
+        print(percentage)
+
+        player_update.update(shot_percentage=percentage)
 
     elif (stat_type == 'intercept'):
         value += player_obj.intercept
@@ -127,3 +164,191 @@ def update_player_stat(stat_type, operation, player_obj, player_update):
         value += player_obj.penalty_kick
         player_update.update(penalty_kick=value)
 
+def update_match_stat(stat_type, operation, match_obj, match_update,side):
+    if (operation =='min'):
+        value= -1
+    elif (operation =='plus'):
+        value= 1
+    else:
+        value = 0
+
+    if (side == 'home'):
+        update_match_home(stat_type, operation, match_obj, match_update, value)
+    else:
+        update_match_away(stat_type, operation, match_obj, match_update, value)
+
+def update_match_home(stat_type, operation, match_obj, match_update, value):
+    if (stat_type == 'goal'):
+        value += match_obj.goal_home   
+        match_update.update(goal_home=value)
+
+
+    elif (stat_type == 'pass_complete'):
+        value+= match_obj.pass_complete_home
+        match_update.update(pass_complete_home=value)
+
+        pass_complete_away = match_obj.pass_complete_away
+        pass_complete_home = value
+
+        if (pass_complete_home+pass_complete_away>0):
+            possession_home = pass_complete_home / (pass_complete_home+pass_complete_away) *100
+            possession_away = pass_complete_away / (pass_complete_home+pass_complete_away) *100
+
+        else:
+            passession_home = 0 
+            passession_away = 0 
+
+        match_update.update(ball_possession_home=possession_home)
+        match_update.update(ball_possession_away=possession_away)
+
+    elif (stat_type == 'pass_incomplete'):
+        value+= match_obj.pass_incomplete_home
+        match_update.update(pass_incomplete_home=value)
+
+    elif (stat_type == 'shot_on_target'):
+        value+= match_obj.shot_on_target_home
+        match_update.update(shot_on_target_home=value)
+
+    elif (stat_type == 'shot_off_target'):
+        value += match_obj.shot_off_target_home
+        match_update.update(shot_off_target_home=value)
+
+    elif (stat_type == 'intercept'):
+        value += match_obj.intercept_home
+        match_update.update(intercept_home=value)
+
+    elif (stat_type == 'block'):
+        value += match_obj.block_home
+        match_update.update(block_home=value)
+    
+    elif (stat_type == 'clearance'):
+        value += match_obj.clearance_home
+        match_update.update(clearance_home=value)
+    
+    elif (stat_type == 'ball_recovery'):
+        value += match_obj.ball_recovery_home
+        match_update.update(ball_recovery_home=value)
+    
+    elif (stat_type == 'saves'):
+        value += match_obj.saves_home
+        match_update.update(saves_home=value)
+    
+    elif (stat_type == 'tackle'):
+        value += match_obj.tackle_home
+        match_update.update(tackle_home=value)
+    
+    elif (stat_type == 'second_ball'):
+        value += match_obj.second_ball_home
+        match_update.update(second_ball_home=value)
+    
+    elif (stat_type == 'fouls_committed'):
+        value += match_obj.fouls_committed_home
+        match_update.update(fouls_committed_home=value)
+    
+    elif (stat_type == 'fouls_suffered'):
+        value += match_obj.fouls_suffered_home
+        match_update.update(fouls_suffered_home=value)
+    
+    elif (stat_type == 'yellow_card'):
+        value += match_obj.yellow_card_home
+        match_update.update(yellow_card_home=value)
+    
+    elif (stat_type == 'red_card'):
+        value += match_obj.red_card_home
+        match_update.update(red_card_home=value)
+    
+    elif (stat_type == 'free_kick'):
+        value += match_obj.free_kick_home
+        match_update.update(free_kick_home=value)
+    
+    elif (stat_type == 'penalty_kick'):
+        value += match_obj.penalty_kick_home
+        match_update.update(penalty_kick_home=value)
+
+def update_match_away(stat_type, operation, match_obj, match_update, value):
+    if (stat_type == 'goal'):
+        value += match_obj.goal_away   
+        match_update.update(goal_away=value)
+
+    elif (stat_type == 'shot_on_target'):
+        value+= match_obj.shot_on_target_away
+        match_update.update(shot_on_target_away=value)
+
+    elif (stat_type == 'pass_complete'):
+        value+= match_obj.pass_complete_away
+        match_update.update(pass_complete_away=value)
+
+        pass_complete_away = match_obj.pass_complete_away
+        pass_complete_home = value
+
+        if (pass_complete_home+pass_complete_away>0):
+            possession_home = pass_complete_home / (pass_complete_home+pass_complete_away) *100
+            possession_away = pass_complete_away / (pass_complete_home+pass_complete_away) *100
+
+        else:
+            passession_home = 0 
+            passession_away = 0 
+
+        match_update.update(ball_possession_home=possession_home)
+        match_update.update(ball_possession_away=possession_away)
+
+
+    elif (stat_type == 'pass_incomplete'):
+        value+= match_obj.pass_incomplete_away
+        match_update.update(pass_incomplete_away=value)
+
+    elif (stat_type == 'shot_off_target'):
+        value += match_obj.shot_off_target_away
+        match_update.update(shot_off_target_away=value)
+
+    elif (stat_type == 'intercept'):
+        value += match_obj.intercept_away
+        match_update.update(intercept_away=value)
+
+    elif (stat_type == 'block'):
+        value += match_obj.block_away
+        match_update.update(block_away=value)
+    
+    elif (stat_type == 'clearance'):
+        value += match_obj.clearance_away
+        match_update.update(clearance_away=value)
+    
+    elif (stat_type == 'ball_recovery'):
+        value += match_obj.ball_recovery_away
+        match_update.update(ball_recovery_away=value)
+    
+    elif (stat_type == 'saves'):
+        value += match_obj.saves_away
+        match_update.update(saves_away=value)
+    
+    elif (stat_type == 'tackle'):
+        value += match_obj.tackle_away
+        match_update.update(tackle_away=value)
+    
+    elif (stat_type == 'second_ball'):
+        value += match_obj.second_ball_away
+        match_update.update(second_ball_away=value)
+    
+    elif (stat_type == 'fouls_committed'):
+        value += match_obj.fouls_committed_away
+        match_update.update(fouls_committed_away=value)
+    
+    elif (stat_type == 'fouls_suffered'):
+        value += match_obj.fouls_suffered_away
+        match_update.update(fouls_suffered_away=value)
+    
+    elif (stat_type == 'yellow_card'):
+        value += match_obj.yellow_card_away
+        match_update.update(yellow_card_away=value)
+    
+    elif (stat_type == 'red_card'):
+        value += match_obj.red_card_away
+        match_update.update(red_card_away=value)
+    
+    elif (stat_type == 'free_kick'):
+        value += match_obj.free_kick_away
+        match_update.update(free_kick_away=value)
+    
+    elif (stat_type == 'penalty_kick'):
+        value += match_obj.penalty_kick_away
+        match_update.update(penalty_kick_away=value)
