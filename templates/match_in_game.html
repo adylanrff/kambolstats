@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="match_in_game">
 
-      <div class="home_team">
-        
+{% if match.available %}
+<div class="match_in_game">
+      <div class="home_team_in_game">
         <div class="team_detail">
-          <h1 class="text-center">{{ home_team.name }}</h1>
-        </div>
+          <h1 class="text-center font-weight-bold">{{ home_team.name }}</h1>
+       </div> 
 
         <div class="team_players">
           <table class="table table-dark text-center table-sm">
@@ -21,18 +21,12 @@
                 <td>Shot Off</td>
                 <td>Shot Acc</td>
                 <td>Interc</td>
-                <td>Block</td>
-                <td>Clear</td>
-                <td>Ball Rec.</td>
                 <td>Saves</td>
                 <td>Tackle</td>
-                <td>2nd Ball</td>
                 <td>Foul Cmtd</td>
                 <td>Foul Sfrd</td>
                 <td>YC</td>
                 <td>RC</td>
-                <td>FK</td>
-                <td>PK</td>
               </tr>
             </thead>
 
@@ -40,44 +34,32 @@
               {% for player in home_team_players %}
               <tr>
               <td>{{player.name}}</td>
-                <td><button class="btn btn-danger goal btn-sm" id="goal-min-{{player.pk}}-home">-</button><span id="goal-val-{{player.pk}}-home">{{player.goal}}</span><button class="btn btn-success goal btn-sm" id="goal-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger goal btn-sm" id="goal-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="goal-val-{{player.pk}}-home">{{player.goal}}</span><button class="btn btn-success goal btn-sm" id="goal-plus-{{player.pk}}-home">+</button></td>
 
-                <td><button class="btn btn-danger pass_complete btn-sm" id="pass_complete-min-{{player.pk}}-home">-</button><span id="pass_complete-val-{{player.pk}}-home">{{player.pass_complete}}</span> <button class="btn btn-success pass_complete btn-sm" id="pass_complete-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger pass_complete btn-sm" id="pass_complete-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="pass_complete-val-{{player.pk}}-home">{{player.pass_complete}}</span> <button class="btn btn-success pass_complete btn-sm" id="pass_complete-plus-{{player.pk}}-home">+</button></td>
 
-                <td><button class="btn btn-danger pass_incomplete btn-sm" id="pass_incomplete-min-{{player.pk}}-home">-</button><span id="pass_incomplete-val-{{player.pk}}-home">{{player.pass_incomplete}}</span> <button class="btn btn-success pass_incomplete btn-sm" id="pass_incomplete-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger pass_incomplete btn-sm" id="pass_incomplete-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="pass_incomplete-val-{{player.pk}}-home">{{player.pass_incomplete}}</span> <button class="btn btn-success pass_incomplete btn-sm" id="pass_incomplete-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><button class="btn btn-danger shot_on_target btn-sm" id="shot_on_target-min-{{player.pk}}-home">-</button><span id="shot_on_target-val-{{player.pk}}-home">{{player.shot_on_target}}</span> <button class="btn btn-success shot_on_target btn-sm" id="shot_on_target-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger shot_on_target btn-sm" id="shot_on_target-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="shot_on_target-val-{{player.pk}}-home">{{player.shot_on_target}}</span> <button class="btn btn-success shot_on_target btn-sm" id="shot_on_target-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><button class="btn btn-danger shot_off_target btn-sm" id="shot_off_target-min-{{player.pk}}-home">-</button><span id="shot_off_target-val-{{player.pk}}-home">{{player.shot_off_target}}</span><button class="btn btn-success shot_off_target btn-sm" id="shot_off_target-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger shot_off_target btn-sm" id="shot_off_target-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="shot_off_target-val-{{player.pk}}-home">{{player.shot_off_target}}</span><button class="btn btn-success shot_off_target btn-sm" id="shot_off_target-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><span id="shot_percentage-val-{{player.pk}}-home">{{player.shot_percentage}}</span></td>
+                <td><span class="ml-2 mr-2" id="shot_percentage-val-{{player.pk}}-home">{{player.shot_percentage}}</span></td>
                 
-                <td><button class="btn btn-danger intercept btn-sm" id="intercept-min-{{player.pk}}-home">-</button><span id="intercept-val-{{player.pk}}-home">{{player.intercept}}</span><button class="btn btn-success intercept btn-sm" id="intercept-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger intercept btn-sm" id="intercept-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="intercept-val-{{player.pk}}-home">{{player.intercept}}</span><button class="btn btn-success intercept btn-sm" id="intercept-plus-{{player.pk}}-home">+</button></td>
+                                
+                <td><button class="btn btn-danger saves btn-sm" id="saves-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="saves-val-{{player.pk}}-home">{{player.saves}}</span><button class="btn btn-success saves btn-sm" id="saves-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><button class="btn btn-danger block btn-sm" id="block-min-{{player.pk}}-home">-</button><span id="block-val-{{player.pk}}-home">{{player.block}}</span><button class="btn btn-success block btn-sm" id="block-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger tackle btn-sm" id="tackle-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="tackle-val-{{player.pk}}-home">{{player.tackle}}</span><button class="btn btn-success tackle btn-sm" id="tackle-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><button class="btn btn-danger clearance btn-sm" id="clearance-min-{{player.pk}}-home">-</button><span id="clearance-val-{{player.pk}}-home">{{player.clearance}}</span><button class="btn btn-success clearance btn-sm" id="clearance-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger fouls_committed btn-sm" id="fouls_committed-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="fouls_committed-val-{{player.pk}}-home">{{player.fouls_committed}}</span><button class="btn btn-success fouls_committed btn-sm" id="fouls_committed-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><button class="btn btn-danger ball_recovery btn-sm" id="ball_recovery-min-{{player.pk}}-home">-</button><span id="ball_recovery-val-{{player.pk}}-home">{{player.ball_recovery}}</span><button class="btn btn-success ball_recovery btn-sm" id="ball_recovery-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger fouls_suffered btn-sm" id="fouls_suffered-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="fouls_suffered-val-{{player.pk}}-home">{{player.fouls_suffered}}</span><button class="btn btn-success fouls_suffered btn-sm" id="fouls_suffered-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><button class="btn btn-danger saves btn-sm" id="saves-min-{{player.pk}}-home">-</button><span id="saves-val-{{player.pk}}-home">{{player.saves}}</span><button class="btn btn-success saves btn-sm" id="saves-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger yellow_card btn-sm" id="yellow_card-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="yellow_card-val-{{player.pk}}-home">{{player.yellow_card}}</span><button class="btn btn-success yellow_card btn-sm" id="yellow_card-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><button class="btn btn-danger tackle btn-sm" id="tackle-min-{{player.pk}}-home">-</button><span id="tackle-val-{{player.pk}}-home">{{player.tackle}}</span><button class="btn btn-success tackle btn-sm" id="tackle-plus-{{player.pk}}-home">+</button></td>
+                <td><button class="btn btn-danger red_card btn-sm" id="red_card-min-{{player.pk}}-home">-</button><span class="ml-2 mr-2" id="red_card-val-{{player.pk}}-home">{{player.red_card}}</span><button class="btn btn-success red_card btn-sm" id="red_card-plus-{{player.pk}}-home">+</button></td>
                 
-                <td><button class="btn btn-danger second_ball btn-sm" id="second_ball-min-{{player.pk}}-home">-</button><span id="second_ball-val-{{player.pk}}-home">{{player.second_ball}}</span><button class="btn btn-success second_ball btn-sm" id="second_ball-plus-{{player.pk}}-home">+</button></td>
-                
-                <td><button class="btn btn-danger fouls_committed btn-sm" id="fouls_committed-min-{{player.pk}}-home">-</button><span id="fouls_committed-val-{{player.pk}}-home">{{player.fouls_committed}}</span><button class="btn btn-success fouls_committed btn-sm" id="fouls_committed-plus-{{player.pk}}-home">+</button></td>
-                
-                <td><button class="btn btn-danger fouls_suffered btn-sm" id="fouls_suffered-min-{{player.pk}}-home">-</button><span id="fouls_suffered-val-{{player.pk}}-home">{{player.fouls_suffered}}</span><button class="btn btn-success fouls_suffered btn-sm" id="fouls_suffered-plus-{{player.pk}}-home">+</button></td>
-                
-                <td><button class="btn btn-danger yellow_card btn-sm" id="yellow_card-min-{{player.pk}}-home">-</button><span id="yellow_card-val-{{player.pk}}-home">{{player.yellow_card}}</span><button class="btn btn-success yellow_card btn-sm" id="yellow_card-plus-{{player.pk}}-home">+</button></td>
-                
-                <td><button class="btn btn-danger red_card btn-sm" id="red_card-min-{{player.pk}}-home">-</button><span id="red_card-val-{{player.pk}}-home">{{player.red_card}}</span><button class="btn btn-success red_card btn-sm" id="red_card-plus-{{player.pk}}-home">+</button></td>
-                
-                <td><button class="btn btn-danger free_kick btn-sm" id="free_kick-min-{{player.pk}}-home">-</button><span id="free_kick-val-{{player.pk}}-home">{{player.free_kick}}</span><button class="btn btn-success free_kick btn-sm" id="free_kick-plus-{{player.pk}}-home">+</button></td>
-                
-                <td><button class="btn btn-danger penalty_kick btn-sm" id="penalty_kick-min-{{player.pk}}-home">-</button><span id="penalty_kick-val-{{player.pk}}-home">{{player.penalty_kick}}</span><button class="btn btn-success penalty_kick btn-sm" id="penalty_kick-plus-{{player.pk}}-home">+</button></td>             
-              </tr>
               {% endfor %}
             </tbody>
 
@@ -85,11 +67,11 @@
         </div>
       </div>
 
-      <hr></hr>
 
-      <div class="away_team ">
+      <h1 class="versus_text text-center mt-3 font-weight-bold">VS</h1>
+      <div class="away_team_in_game ">
         <div class="team_detail">
-          <h1 class="text-center">{{ away_team.name }}</h1>
+          <h1 class="text-center font-weight-bold">{{ away_team.name }}</h1>
         </div>
 
         <div class="team_players">
@@ -104,18 +86,12 @@
                 <td>Shot Off</td>
                 <td>Shot Acc</td>
                 <td>Interc</td>
-                <td>Block</td>
-                <td>Clear</td>
-                <td>Ball Rec.</td>
                 <td>Saves</td>
                 <td>Tackle</td>
-                <td>2nd Ball</td>
                 <td>Foul Cmtd</td>
                 <td>Foul Sfrd</td>
                 <td>YC</td>
                 <td>RC</td>
-                <td>FK</td>
-                <td>PK</td>
               </tr>
             </thead>
 
@@ -123,43 +99,31 @@
               {% for player in away_team_players %}
               <tr>
                 <td>{{player.name}}</td>
-                <td><button class="btn btn-danger goal btn-sm" id="goal-min-{{player.pk}}-away">-</button><span id="goal-val-{{player.pk}}-away">{{player.goal}}</span><button class="btn btn-success goal btn-sm" id="goal-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger goal btn-sm" id="goal-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="goal-val-{{player.pk}}-away">{{player.goal}}</span><button class="btn btn-success goal btn-sm" id="goal-plus-{{player.pk}}-away">+</button></td>
 
-                <td><button class="btn btn-danger pass_complete btn-sm" id="pass_complete-min-{{player.pk}}-away">-</button><span id="pass_complete-val-{{player.pk}}-away">{{player.pass_complete}}</span> <button class="btn btn-success pass_complete btn-sm" id="pass_complete-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger pass_complete btn-sm" id="pass_complete-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="pass_complete-val-{{player.pk}}-away">{{player.pass_complete}}</span> <button class="btn btn-success pass_complete btn-sm" id="pass_complete-plus-{{player.pk}}-away">+</button></td>
 
-                <td><button class="btn btn-danger pass_incomplete btn-sm" id="pass_incomplete-min-{{player.pk}}-away">-</button><span id="pass_incomplete-val-{{player.pk}}-away">{{player.pass_incomplete}}</span> <button class="btn btn-success pass_incomplete btn-sm" id="pass_incomplete-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger pass_incomplete btn-sm" id="pass_incomplete-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="pass_incomplete-val-{{player.pk}}-away">{{player.pass_incomplete}}</span> <button class="btn btn-success pass_incomplete btn-sm" id="pass_incomplete-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger shot_on_target btn-sm" id="shot_on_target-min-{{player.pk}}-away">-</button><span id="shot_on_target-val-{{player.pk}}-away">{{player.shot_on_target}}</span> <button class="btn btn-success shot_on_target btn-sm" id="shot_on_target-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger shot_on_target btn-sm" id="shot_on_target-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="shot_on_target-val-{{player.pk}}-away">{{player.shot_on_target}}</span> <button class="btn btn-success shot_on_target btn-sm" id="shot_on_target-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger shot_off_target btn-sm" id="shot_off_target-min-{{player.pk}}-away">-</button><span id="shot_off_target-val-{{player.pk}}-away">{{player.shot_off_target}}</span><button class="btn btn-success shot_off_target btn-sm" id="shot_off_target-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger shot_off_target btn-sm" id="shot_off_target-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="shot_off_target-val-{{player.pk}}-away">{{player.shot_off_target}}</span><button class="btn btn-success shot_off_target btn-sm" id="shot_off_target-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><span id="shot_percentage-val-{{player.pk}}-away">{{player.shot_percentage}}</span></td>
+                <td><span class="ml-2 mr-2" id="shot_percentage-val-{{player.pk}}-away">{{player.shot_percentage}}</span></td>
                 
-                <td><button class="btn btn-danger intercept btn-sm" id="intercept-min-{{player.pk}}-away">-</button><span id="intercept-val-{{player.pk}}-away">{{player.intercept}}</span><button class="btn btn-success intercept btn-sm" id="intercept-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger intercept btn-sm" id="intercept-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="intercept-val-{{player.pk}}-away">{{player.intercept}}</span><button class="btn btn-success intercept btn-sm" id="intercept-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger block btn-sm" id="block-min-{{player.pk}}-away">-</button><span id="block-val-{{player.pk}}-away">{{player.block}}</span><button class="btn btn-success block btn-sm" id="block-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger saves btn-sm" id="saves-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="saves-val-{{player.pk}}-away">{{player.saves}}</span><button class="btn btn-success saves btn-sm" id="saves-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger clearance btn-sm" id="clearance-min-{{player.pk}}-away">-</button><span id="clearance-val-{{player.pk}}-away">{{player.clearance}}</span><button class="btn btn-success clearance btn-sm" id="clearance-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger tackle btn-sm" id="tackle-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="tackle-val-{{player.pk}}-away">{{player.tackle}}</span><button class="btn btn-success tackle btn-sm" id="tackle-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger ball_recovery btn-sm" id="ball_recovery-min-{{player.pk}}-away">-</button><span id="ball_recovery-val-{{player.pk}}-away">{{player.ball_recovery}}</span><button class="btn btn-success ball_recovery btn-sm" id="ball_recovery-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger fouls_committed btn-sm" id="fouls_committed-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="fouls_committed-val-{{player.pk}}-away">{{player.fouls_committed}}</span><button class="btn btn-success fouls_committed btn-sm" id="fouls_committed-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger saves btn-sm" id="saves-min-{{player.pk}}-away">-</button><span id="saves-val-{{player.pk}}-away">{{player.saves}}</span><button class="btn btn-success saves btn-sm" id="saves-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger fouls_suffered btn-sm" id="fouls_suffered-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="fouls_suffered-val-{{player.pk}}-away">{{player.fouls_suffered}}</span><button class="btn btn-success fouls_suffered btn-sm" id="fouls_suffered-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger tackle btn-sm" id="tackle-min-{{player.pk}}-away">-</button><span id="tackle-val-{{player.pk}}-away">{{player.tackle}}</span><button class="btn btn-success tackle btn-sm" id="tackle-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger yellow_card btn-sm" id="yellow_card-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="yellow_card-val-{{player.pk}}-away">{{player.yellow_card}}</span><button class="btn btn-success yellow_card btn-sm" id="yellow_card-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger second_ball btn-sm" id="second_ball-min-{{player.pk}}-away">-</button><span id="second_ball-val-{{player.pk}}-away">{{player.second_ball}}</span><button class="btn btn-success second_ball btn-sm" id="second_ball-plus-{{player.pk}}-away">+</button></td>
-                
-                <td><button class="btn btn-danger fouls_committed btn-sm" id="fouls_committed-min-{{player.pk}}-away">-</button><span id="fouls_committed-val-{{player.pk}}-away">{{player.fouls_committed}}</span><button class="btn btn-success fouls_committed btn-sm" id="fouls_committed-plus-{{player.pk}}-away">+</button></td>
-                
-                <td><button class="btn btn-danger fouls_suffered btn-sm" id="fouls_suffered-min-{{player.pk}}-away">-</button><span id="fouls_suffered-val-{{player.pk}}-away">{{player.fouls_suffered}}</span><button class="btn btn-success fouls_suffered btn-sm" id="fouls_suffered-plus-{{player.pk}}-away">+</button></td>
-                
-                <td><button class="btn btn-danger yellow_card btn-sm" id="yellow_card-min-{{player.pk}}-away">-</button><span id="yellow_card-val-{{player.pk}}-away">{{player.yellow_card}}</span><button class="btn btn-success yellow_card btn-sm" id="yellow_card-plus-{{player.pk}}-away">+</button></td>
-                
-                <td><button class="btn btn-danger red_card btn-sm" id="red_card-min-{{player.pk}}-away">-</button><span id="red_card-val-{{player.pk}}-away">{{player.red_card}}</span><button class="btn btn-success red_card btn-sm" id="red_card-plus-{{player.pk}}-away">+</button></td>
-                
-                <td><button class="btn btn-danger free_kick btn-sm" id="free_kick-min-{{player.pk}}-away">-</button><span id="free_kick-val-{{player.pk}}-away">{{player.free_kick}}</span><button class="btn btn-success free_kick btn-sm" id="free_kick-plus-{{player.pk}}-away">+</button></td>
-                
-                <td><button class="btn btn-danger penalty_kick btn-sm" id="penalty_kick-min-{{player.pk}}-away">-</button><span id="penalty_kick-val-{{player.pk}}-away">{{player.penalty_kick}}</span><button class="btn btn-success penalty_kick btn-sm" id="penalty_kick-plus-{{player.pk}}-away">+</button></td>
+                <td><button class="btn btn-danger red_card btn-sm" id="red_card-min-{{player.pk}}-away">-</button><span class="ml-2 mr-2" id="red_card-val-{{player.pk}}-away">{{player.red_card}}</span><button class="btn btn-success red_card btn-sm" id="red_card-plus-{{player.pk}}-away">+</button></td>
               
               </tr>
               {% endfor %}
@@ -170,19 +134,111 @@
 
         </div>
 
+        
       </div>
+
+
+
 
   </div>
 
-  <button class="btn btn-primary float-right mr-3 mt-3 p-3">End game</button>
+{% endif %}
+    <div class="head_to_head mt-4 mb-4 p-2" id="head2head">
+      
+      <h1 class="text-center font-weight-bold head_to_head_title">HEAD TO HEAD</h1>
+      
+      <div class="home_stats text-center" id="home_stats"> 
+        <h2 class="font-weight-bold">{{home_team.name}}</h2>
+        <p id ="head_to_head-goal-home">{{match.goal_home}}</p>
+        <p id ="head_to_head-ball_possession-home">{{match.ball_possession_home}}%</p>
+        <p id ="head_to_head-pass_complete-home">{{match.pass_complete_home}}</p>
+        <p id ="head_to_head-pass_incomplete-home">{{match.pass_incomplete_home}}</p>
+        <p id ="head_to_head-shot_on_target-home">{{match.shot_on_target_home}}</p>
+        <p id ="head_to_head-shot_off_target-home">{{match.shot_off_target_home}}</p>
+        <p id ="head_to_head-intercept-home">{{match.intercept_home}}</p>
+        <p id ="head_to_head-saves-home">{{match.saves_home}}</p>
+        <p id ="head_to_head-tackle-home">{{match.tackle_home}}</p>
+        <p id ="head_to_head-fouls_commited-home">{{match.fouls_committed_home}}</p>
+        <p id ="head_to_head-fouls_suffered-home">{{match.fouls_suffered_home}}</p>
+        <p id ="head_to_head-yellow_card-home">{{match.yellow_card_home}}</p>
+        <p id ="head_to_head-red_card-home">{{match.red_card_home}}</p>
+      </div>
+      <div class="stats_type text-center font-weight-bold">
+        <h2>VS</h2>
+        <p>Goal</p>
+        <p>Ball Possession</p>
+        <p>Pass Complete</p>
+        <p>Pass Incomplete</p>
+        <p>Shot On Target</p>
+        <p>Shot Off Target</p>
+        <p>Intercept</p>
+        <p>Saves</p>
+        <p>Tackle</p>
+        <p>Fouls Commited</p>
+        <p>Fouls Suffered</p>
+        <p>Yellow Card</p>
+        <p>Red Card</p>
+      </div>
+
+      <div class="away_stats text-center" id="away_stats">
+        <h2 class="font-weight-bold">{{away_team.name}}</h2>
+        <p id ="head_to_head-goal-away" >{{match.goal_away}}</p>
+        <p id ="head_to_head-ball_possession-away">{{match.ball_possession_away}}%</p>
+        <p id ="head_to_head-pass_complete-away">{{match.pass_complete_away}}</p>
+        <p id ="head_to_head-pass_incomplete-away">{{match.pass_incomplete_away}}</p>
+        <p id ="head_to_head-shot_on_target-away">{{match.shot_on_target_away}}</p>
+        <p id ="head_to_head-shot_off_target-away">{{match.shot_off_target_away}}</p>
+        <p id ="head_to_head-intercept-away">{{match.intercept_away}}</p>
+        <p id ="head_to_head-saves-away">{{match.saves_away}}</p>
+        <p id ="head_to_head-tackle-away">{{match.tackle_away}}</p>
+        <p id ="head_to_head-fouls_commited-away">{{match.fouls_committed_away}}</p>
+        <p id ="head_to_head-fouls_suffered-away">{{match.fouls_suffered_away}}</p>
+        <p id ="head_to_head-yellow_card-away">{{match.yellow_card_away}}</p>
+        <p id ="head_to_head-red_card-away">{{match.red_card_away}}</p>
+      </div>
+
+      <button class="btn btn-danger ml-3 mt-3 p-3" id="end_game">End game</button>
+    </div>
+    
+    <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="add_match_popup">
+      <span class="close">&times;</span>
+        <div class="form-group">
+        <p>You are going to end the game.
+        You cannot modify the data for this match if you continue.
+        Are you sure?</p>
+
+        <button class="btn btn-danger" id="submit_end_game" onclick="funEvaluate()">Yes, I am sure</button>
+        </div>
+    </div>
+
+  </div>
+
+
 
 {% endblock content %}
 
 {% block script %}
   
   <script> 
-   $(document).ready(function(){
+    var $modal = $('#myModal');
+    // Get the button that opens the modal
+    var $btn = $("#end_game");
+
+    var $btn_submit = $("#submit_end_game");
+    // Get the <span> element that closes the modal
+    var $span = $(".close");
     
+
+    $btn.click(function() {
+        $modal.css("display","block") ;
+    }); 
+    // When the user clicks on <span> (x), close the modal
+    $span.click(function(){
+      $modal.css("display","none") ;
+    });
+
     var send_data = function (nim_number,type,operator,side,match_id,home_team_id, away_team_id){
       $.ajax({
         url: '/players/update/',
@@ -223,12 +279,11 @@
           else{
             var percentage = 0;
           }
-
-
           shot_acc_value.html(percentage.toFixed(2))
-
         }
 
+        $("#home_stats").load(location.href + " #home_stats");
+        $("#away_stats").load(location.href + " #away_stats");
 
         console.log("success");
       })
@@ -237,6 +292,8 @@
         console.log("error");
       })
       .always(function() {
+        var goal_value = {{ home_team.goal_for }}
+        console.log(goal_value);
         console.log(nim_number);
         console.log(type);
         console.log(operator);
@@ -246,6 +303,48 @@
       });
     }
 
+    var evaluate_match = function(match_id, home_team_id, away_team_id, goal_home, goal_away) {
+        $.ajax({
+          url: '/match/evaluate',
+          type: 'POST',
+          data: {
+            match_id:match_id,
+            home_team_id : home_team_id,
+            away_team_id : away_team_id,
+            goal_home: goal_home,
+            goal_away : goal_away,
+            csrfmiddlewaretoken : '{{ csrf_token }}',
+          },
+        })
+        .done(function() {
+          alert("Successfully added " + name)
+          window.location.reload();
+          console.log("success");
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        .always(function() {
+          $modal.css("display","none") ;  
+          console.log("complete");
+        });
+    }
+
+    function funEvaluate() {
+      var $goal_home = $("#head_to_head-goal-home");
+      var $goal_away = $("#head_to_head-goal-away");
+      var goal_home_value = parseInt($goal_home.text());
+      var goal_away_value = parseInt($goal_away.text());      
+      var match_id = {{match.id}}
+      var home_team_id = {{home_team.id}}
+      var away_team_id = {{away_team.id}}
+
+      evaluate_match(match_id,home_team_id,away_team_id,goal_home_value, goal_away_value);
+    }
+    // $("#submit_end_game").click(function()){
+    //     evaluate_match(match_id, home_team_id, away_team_id, goal_home_value, goal_away_value);
+    
+    // }
 
     $("button").click(function() {
         var id = $(this).attr("id").split("-");
@@ -258,13 +357,16 @@
         var home_team_id = {{home_team.id}}
         var away_team_id = {{away_team.id}}
 
-        send_data(nim_number,type,operator,side,match_id,home_team_id, away_team_id);  
 
-        console.log("{{match.id}}");
 
+        if (id!="end_game" && id!="submit_end_game"){
+          send_data(nim_number,type,operator,side,match_id,home_team_id, away_team_id);    
+        } 
+        
+        
       });
-    });
   
+   
   </script>
 
 {% endblock script  %}

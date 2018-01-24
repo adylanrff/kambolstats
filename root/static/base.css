@@ -57,11 +57,8 @@
   margin:0 auto;
 }
 
-/*
-.team_detail {
-  grid-column: span 0;
-}*/
 
 .team_players {
   grid-column : span 12;
 }
+

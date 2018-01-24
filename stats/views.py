@@ -3,7 +3,7 @@ from django.views.generic import ListView, TemplateView, DetailView
 from django.views.generic.edit import FormMixin
 from django.http import HttpResponse
 from .models import Player, Team, Match
-from .forms import TeamForm, MatchForm
+from .forms import TeamForm, MatchForm, PlayerForm
 # Create your views here.
 
 class FormListView(FormMixin, ListView):
@@ -40,6 +40,7 @@ class TeamListView(FormListView):
     template_name = 'team_list.html'
 
 class TeamDetailView(DetailView):
+    form_class = PlayerForm
     model = Team
     context_object_name = 'team'
     template_name = 'team_detail.html'
@@ -47,6 +48,7 @@ class TeamDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['player_list'] = Player.objects.filter(team = self.object)
+        context['form'] = PlayerForm
         return context
 
 
@@ -69,7 +71,6 @@ class MatchInGameView(DetailView):
         context['away_team'] = Team.objects.get(id = self.object.away_team.id)
         context['away_team_players'] = Player.objects.filter(team=context['away_team'])
         return context
-        # class TeamDetailView(ListView):
 
 def add_team(request):
     if (request.method=='POST'):
@@ -94,6 +95,16 @@ def add_match(request):
 
     return HttpResponse('')
 
+def add_player(request):
+    if (request.method == 'POST'):
+        nim = request.POST['nim']
+        name = request.POST['name']
+        team_id = request.POST['team_id']
+        team = Team.objects.get(id=team_id)
+
+        Player.objects.create(NIM = nim, name = name, team = team)
+
+    return HttpResponse('')
 
 def update_stats(request):
     if request.method == 'POST':
@@ -442,3 +453,50 @@ def update_team_stat(stat_type, operation, home_team_id, away_team_id,side):
             goal_against_away = value+ away_team_obj.goal_against
             home_team_update.update(goal_for=goal_for_home)
             away_team_update.update(goal_against= goal_against_away)
+
+def evaluate_match():
+    if (request.method=='POST'):
+        match_id = request.POST['match_id']
+        home_team_id = request.POST['home_team_id']
+        away_team_id = request.POST['away_team_id']
+        goal_home = request.POST['goal_home']
+        goal_team = request.POST['goal_away']
+
+        match = Match.objects.filter(id = match_id)
+
+        home_team_obj = Team.objexts.get(id = home_team_id)
+        home_team_update = Team.objexts.get(id = home_team_id)
+
+
+        away_team_obj = Team.objexts.get(id = away_team_id)
+        away_team_update = Team.objexts.filter(id = away_team_id)
+
+        match.update(available = False)
+
+        if (goal_home>goal_team):
+            win_home = home_team_obj.win
+            win_home+=1
+
+            lose_away = away_team_obj.lose
+            lose_away+=1
+
+            home_team.update(win = win_home)
+            away_team.update(lose = lose_away)
+        elif (goal_home<goal_team):
+            win_away = away_team_obj.win
+            win_away+=1
+
+            lose_home = home_team_obj.lose
+            lose_home+=1
+
+            home_team.update(lose = lose_home)
+            away_team.update(win = win_away)
+        else:
+            draw_home = home_team_obj.draw
+            draw_away = away_team_obj.draw
+            draw_home+=1
+            draw_away+=1
+
+            home_team.update(draw = draw_home)
+            away_team.update(draw = draw_away)
+

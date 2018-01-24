@@ -1,39 +1,136 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="team_logo">
+<div class="team_detail">
+  <div class="team_logo">
 
+  </div>
+
+  <h1 class="text-center"> {{ team.name }}</h1>
+
+  <table class="player_list table table-striped table-bordered table-sm">
+
+    <thead class="thead-dark">
+      <tr>
+        <td>NIM</td>
+        <td>Name</td>
+        <td>Goal</td>
+        <td>PC</td>
+        <td>PIC</td>
+        <td>Shot On</td>
+        <td>Shot Off</td>
+        <td>Shot Acc</td>
+        <td>Interc</td>
+        <td>Saves</td>
+        <td>Tackle</td>
+        <td>Foul Cmtd</td>
+        <td>Foul Sfrd</td>
+        <td>YC</td>
+        <td>RC</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for player in player_list %}
+      <tr>
+        <td>{{player.NIM}}</td>
+        <td>{{player.name}}</td>
+        <td>{{player.goal}}</td>
+        <td>{{player.pass_complete}}</td>
+        <td>{{player.pass_incomplete}}</td>
+        <td>{{player.shot_on_target}}</td>
+        <td>{{player.shot_off_target}}</td>
+        <td>{{player.shot_percentage}}</td>
+        <td>{{player.intercept}}</td>
+        <td>{{player.saves}}</td>
+        <td>{{player.tackle}}</td>
+        <td>{{player.fouls_committed}}</td>
+        <td>{{player.fouls_suffered}}</td>
+        <td>{{player.yellow_card}}</td>
+        <td>{{player.red_card}}</td>
+      </tr>
+
+      {% endfor %}
+      <!-- <button>DELETE</button> -->
+    </tbody>
+  </table>
+<button class="btn btn-primary float-right p-2" id="add_player">Add Player</button>
 </div>
 
-<h1>Name: {{ team.name }}</h1>
-<h1>Points: {{ team.points }}</h1>
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="add_match_popup">
+      <span class="close">&times;</span>
+        <div class="form-group">
+          {{form.as_p}}
+        <button class="btn btn-success" id="submit_add_player">Add Player</button>
+        </div>
+    </div>
 
-<table class="player_list table table-striped table-bordered table-sm">
-
-  <thead class="thead-dark">
-    <tr>
-      <th>NIM</th>
-      <th>Name</th>
-      <th>Goals</th>
-      <th>Shoot</th>
-      <th>Pass Success</th>
-      <th>Pass Unsuccess</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    {% for player in player_list %}
-    <tr>
-      <td>{{player.NIM}}</td>
-      <td>{{player.name}}</td>
-      <td>{{player.goals}}</td>
-      <td>{{player.shoot}}</td>
-      <td>{{player.pass_succees}}</td>
-      <td>{{player.pass_unsuccess}}</td>
-    </tr>
-
-    {% endfor %}
-    <!-- <button>DELETE</button> -->
-  </tbody>
-</table>
+  </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+
+var $modal = $('#myModal');
+// Get the button that opens the modal
+var $btn = $("#add_player");
+// close popup functionality
+var $span = $(".close");
+
+// form variables
+var $NIM = $("#id_NIM");
+var $name = $("#id_name");
+
+var $btn_submit = $("#submit_add_player")
+
+
+$btn.click(function() {
+    $modal.css("display","block") ;
+}); 
+// When the user clicks on <span> (x), close the modal
+$span.click(function(){
+  $modal.css("display","none") ;
+});
+
+
+
+var send_data = function(nim,name,team_id){
+  $.ajax({
+    url: '/players/add',
+    type: 'POST',
+    data: {
+      nim:nim,
+      name: name,
+      team_id : team_id,
+      csrfmiddlewaretoken : '{{ csrf_token }}',
+    },
+  })
+  .done(function() {
+    alert("Successfully added " + name)
+    window.location.reload();
+    console.log("success");
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    $modal.css("display","none") ;  
+    console.log("complete");
+  });
+
+}
+
+$btn_submit.click(function(){
+  var NIM_value = $NIM.val();
+  var name_value = $name.val();
+  var team_id = {{team.id}}
+
+  send_data(NIM_value, name_value, team_id);
+});
+
+
+</script>
+
+{% endblock script %}
