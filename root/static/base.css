@@ -1,0 +1,67 @@
+/*base*/
+.main {
+  margin: 0 auto;
+  margin-top: 100px;
+  width:100%;
+}
+
+/*home*/
+/*----------------------*/
+.menu{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+
+.menu_btn {
+  width: 100%;
+  margin:0 auto;
+  margin-top: 50px;
+  min-height: 200px;
+}
+
+.btn_menu_scoreboard {
+  grid-column: span 2;
+}
+/*----------------------*/
+
+/*Scoreboard*/
+/*----------------------*/
+.scoreboard {
+  width:100%;
+  text-align: center;
+}
+/*----------------------*/
+
+/*match in game*/
+.match_in_game {
+  display: grid;
+  min-height: 500px;
+  grid-template-columns: repeat(12,1fr);
+}
+
+
+.match_in_game .home_team, .match_in_game .away_team {
+  padding :8px;
+  min-height: 200px;
+  height: 100%;
+  background: #d6dd2f;
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+}
+
+
+/*Team List*/
+.team_list{
+  width:80%;
+  margin:0 auto;
+}
+
+/*
+.team_detail {
+  grid-column: span 0;
+}*/
+
+.team_players {
+  grid-column : span 12;
+}

@@ -2,8 +2,9 @@
 
 {% block content %}
 <div class="match_in_game">
-      <div class="home_team">
 
+      <div class="home_team">
+        
         <div class="team_detail">
           <h1 class="text-center">{{ home_team.name }}</h1>
         </div>
@@ -87,7 +88,6 @@
       <hr></hr>
 
       <div class="away_team ">
-
         <div class="team_detail">
           <h1 class="text-center">{{ away_team.name }}</h1>
         </div>
@@ -133,7 +133,7 @@
                 
                 <td><button class="btn btn-danger shot_off_target btn-sm" id="shot_off_target-min-{{player.pk}}-away">-</button><span id="shot_off_target-val-{{player.pk}}-away">{{player.shot_off_target}}</span><button class="btn btn-success shot_off_target btn-sm" id="shot_off_target-plus-{{player.pk}}-away">+</button></td>
                 
-                <td><button class="btn btn-danger shot_percentage btn-sm" id="shot_percentage-min-{{player.pk}}-away">-</button><span id="shot_percentage-val-{{player.pk}}-away">{{player.shot_percentage}}</span><button class="btn btn-success shot_percentage btn-sm" id="shot_percentage-plus-{{player.pk}}-away">+</button></td>
+                <td><span id="shot_percentage-val-{{player.pk}}-away">{{player.shot_percentage}}</span></td>
                 
                 <td><button class="btn btn-danger intercept btn-sm" id="intercept-min-{{player.pk}}-away">-</button><span id="intercept-val-{{player.pk}}-away">{{player.intercept}}</span><button class="btn btn-success intercept btn-sm" id="intercept-plus-{{player.pk}}-away">+</button></td>
                 
@@ -166,11 +166,15 @@
             </tbody>
 
           </table>
+
+
         </div>
 
       </div>
 
   </div>
+
+  <button class="btn btn-primary float-right mr-3 mt-3 p-3">End game</button>
 
 {% endblock content %}
 
@@ -179,7 +183,7 @@
   <script> 
    $(document).ready(function(){
     
-    var send_data = function (nim_number,type,operator,side,match_id){
+    var send_data = function (nim_number,type,operator,side,match_id,home_team_id, away_team_id){
       $.ajax({
         url: '/players/update/',
         type: 'POST',
@@ -189,6 +193,8 @@
           operation : operator,
           side : side,
           match_id: match_id,
+          home_team_id: home_team_id,
+          away_team_id: away_team_id,
           csrfmiddlewaretoken : '{{ csrf_token }}'
         },
       })
@@ -249,8 +255,10 @@
         var nim_number = id[2];
         var side = id[3];
         var match_id = {{match.id}}
-       
-        send_data(nim_number,type,operator,side,match_id);  
+        var home_team_id = {{home_team.id}}
+        var away_team_id = {{away_team.id}}
+
+        send_data(nim_number,type,operator,side,match_id,home_team_id, away_team_id);  
 
         console.log("{{match.id}}");
 

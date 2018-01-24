@@ -1,8 +1,29 @@
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView, DetailView
+from django.views.generic.edit import FormMixin
 from django.http import HttpResponse
 from .models import Player, Team, Match
+from .forms import TeamForm, MatchForm
 # Create your views here.
+
+class FormListView(FormMixin, ListView):
+    def get(self, request, *args, **kwargs):
+        # From ProcessFormMixin
+        form_class = self.get_form_class()
+        self.form = self.get_form(form_class)
+
+        # From BaseListView
+        self.object_list = self.get_queryset()
+        allow_empty = self.get_allow_empty()
+        if not allow_empty and len(self.object_list) == 0:
+            raise Http404(_(u"Empty list and '%(class_name)s.allow_empty' is False.")
+                          % {'class_name': self.__class__.__name__})
+
+        context = self.get_context_data(object_list=self.object_list, form=self.form)
+        return self.render_to_response(context)
+
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -11,6 +32,12 @@ class ScoreboardView(ListView):
     model = Team
     context_object_name = 'team_list'
     template_name = 'scoreboard.html'
+
+class TeamListView(FormListView):
+    form_class = TeamForm
+    model = Team
+    context_object_name = 'team_list'
+    template_name = 'team_list.html'
 
 class TeamDetailView(DetailView):
     model = Team
@@ -21,6 +48,14 @@ class TeamDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['player_list'] = Player.objects.filter(team = self.object)
         return context
+
+
+class MatchListView(FormListView):
+    form_class = MatchForm
+    model = Match
+    context_object_name = 'match_list'
+    template_name = 'match_list.html'
+
 
 class MatchInGameView(DetailView):
     model = Match
@@ -36,25 +71,53 @@ class MatchInGameView(DetailView):
         return context
         # class TeamDetailView(ListView):
 
-def update_player(request):
+def add_team(request):
+    if (request.method=='POST'):
+        name = request.POST['name']
+        Team.objects.create(name=name).save()
+
+    return HttpResponse('')
+
+def add_match(request):
+    if (request.method =='POST'):
+        home_team_id = request.POST['home_team_id']
+        away_team_id = request.POST['away_team_id']
+        match_date = request.POST['match_date']
+        match_time = request.POST['match_time']
+
+        home_team = Team.objects.get(id=home_team_id)
+        away_team = Team.objects.get(id=away_team_id)
+        match_datetime = match_date + " " + match_time
+        
+        Match.objects.create(home_team = home_team, away_team=away_team, match_date = match_datetime, available=True)
+
+
+    return HttpResponse('')
+
+
+def update_stats(request):
     if request.method == 'POST':
         nim = request.POST['nim']
         stat_type = request.POST['stat_type']
         operation = request.POST['operation']
         match_id = request.POST['match_id']
         side = request.POST['side']
+        home_team_id = request.POST['home_team_id']
+        away_team_id = request.POST['away_team_id']
 
         player_obj = Player.objects.get(NIM = nim)
         player_update = Player.objects.filter(NIM = nim)
-        
+
         match_obj = Match.objects.get(id=match_id)
         match_update = Match.objects.filter(id = match_id)
 
         update_player_stat(stat_type,operation, player_obj, player_update)
         update_match_stat(stat_type,operation,match_obj,match_update,side)
+        update_team_stat(stat_type,operation,home_team_id,away_team_id,side)
 
         return HttpResponse('')
 
+    # if request.method == 'GET':
 
 def update_player_stat(stat_type, operation, player_obj, player_update):
     if (operation =='min'):
@@ -352,3 +415,30 @@ def update_match_away(stat_type, operation, match_obj, match_update, value):
     elif (stat_type == 'penalty_kick'):
         value += match_obj.penalty_kick_away
         match_update.update(penalty_kick_away=value)
+
+def update_team_stat(stat_type, operation, home_team_id, away_team_id,side):
+    home_team_obj = Team.objects.get(id = home_team_id)
+    home_team_update = Team.objects.filter(id=home_team_id)
+    
+    away_team_obj = Team.objects.get(id = away_team_id)
+    away_team_update = Team.objects.filter(id=away_team_id)
+
+    if (operation =='min'):
+        value= -1
+    elif (operation =='plus'):
+        value= 1
+    else:
+        value = 0
+
+    if (side=='away'):
+        if (stat_type == 'goal'):
+            goal_for_away = value+away_team_obj.goal_for
+            goal_against_home = value+ home_team_obj.goal_against
+            away_team_update.update(goal_for=goal_for_away)
+            home_team_update.update(goal_against= goal_against_home)
+    else:
+        if (stat_type == 'goal'):
+            goal_for_home = value + home_team_obj.goal_for
+            goal_against_away = value+ away_team_obj.goal_against
+            home_team_update.update(goal_for=goal_for_home)
+            away_team_update.update(goal_against= goal_against_away)

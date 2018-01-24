@@ -1,4 +1,5 @@
 {% load staticfiles %}
+
 <html>
 <head>
   <title>{% block title%} {% endblock title %}</title>
@@ -8,6 +9,18 @@
 </head>
 
 <body>
+
+<ul class="nav justify-content-center bg-light pt-3 pb-3">
+  <li class="nav-item">
+    <a class="nav-link active" href="/">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/teams">Teams</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/match">Matches</a>
+  </li>
+</ul>
 <div class="main">
 
   {% block content %}
@@ -19,7 +32,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
   {% block script %} {% endblock script %}
 
-</body>
+	</body>
 
 
 

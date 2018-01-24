@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="team_list">
+
+<h1 class="text-center mb-5">TEAM LIST</h1>
+  <div class="table-responsive">
+	  <table class="scoreboard table table-striped table-bordered table-sm">
+
+	    <thead class="thead-dark">
+	      <tr>
+	        <th>Team Name</th>
+	        <th>W</th>
+	        <th>L</th>
+	        <th>D</th>
+	        <th>GF</th>
+	        <th>GA</th>
+	      </tr>
+	    </thead>
+
+	    <tbody>
+	      {% for team in team_list %}
+	      <tr>
+	      <td><a href="{% url 'team_detail' team.pk %}">{{team.name}}</a></td>
+	        <td>{{team.win}}</td>
+	        <td>{{team.lose}}</td>
+	        <td>{{team.draw}}</td>
+	        <td>{{team.goal_for}}</td>
+	        <td>{{team.goal_against}}</td>
+	      </tr>
+	      {% endfor %}
+	    </tbody>
+	  </table>
+  
+  </div>
+
+<button class="btn btn-primary float-right" id="add_team">Add Team</button>
+
+	<div id="myModal" class="modal">
+	  <!-- Modal content -->
+	  <div class="add_team_popup">
+	    <span class="close">&times;</span>
+	    	<div class="form-group">
+	    	{{form.as_p}}
+	    	<button class="btn btn-success" id="submit_add_team">Add team</button>
+	    	</div>
+	    </form>
+	  </div>
+
+	</div>
+
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+<script>
+
+var $modal = $('#myModal');
+// Get the button that opens the modal
+var $btn = $("#add_team");
+
+var $btn_submit = $("#submit_add_team");
+// Get the <span> element that closes the modal
+var $span = $(".close");
+// When the user clicks the button, open the modal 
+var $name = $("#id_name");
+
+$btn.click(function() {
+    $modal.css("display","block") ;
+}); 
+// When the user clicks on <span> (x), close the modal
+$span.click(function(){
+	$modal.css("display","none") ;
+});
+
+
+
+
+var send_data = function(name){
+	$.ajax({
+		url: '/teams/add',
+		type: 'POST',
+		data: {
+			name: name,
+			csrfmiddlewaretoken : '{{ csrf_token }}',
+		},
+	})
+	.done(function() {
+		alert("Successfully added " + name)
+		window.location.reload();
+		console.log("success");
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		$modal.css("display","none") ;	
+		console.log("complete");
+	});
+
+}
+
+$btn_submit.click(function(){
+	
+	var name_value = $name.val();
+	send_data(name_value);
+
+	});
+
+
+
+// When the user clicks anywhere outside of the modal, close it
+
+</script>
+{% endblock script %}

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="match_list">
+	<h1 class="text-center mb-5">MATCH LIST</h1>
+
+	<div class="match_list_table">
+      {% for match in 	match_list %}
+      	<div class="match_instance" >
+	        <div class="separator bg-dark"></div>
+
+	      	<div class="home_team text-center p-2">
+	      		<h3 class="font-weight-bold">{{match.home_team.name}}</h3>	
+	      	</div>
+
+	      	<div class="match_date text-center bg-light">
+	      	<br>
+	      	<br>
+	      	<h2>VS</h2>
+	      	<br>
+
+	      	<p>{{match.match_date}}</p>
+	      	<a href="{% url 'match_in_game' match.pk %}"> Match details >></a>
+	        </div>	
+
+	        <div class="away_team text-center p-2">
+	        	<h3 class="font-weight-bold">{{match.away_team.name}}</h3>	
+	        </div>
+
+	        <div class="separator bg-dark"></div>
+	      	
+      	</div>
+      {% endfor %}
+
+  	</div>
+
+	<button class="btn btn-primary float-right mt-3" id="add_match">Add Match</button>
+
+	<div id="myModal" class="modal">
+	  <!-- Modal content -->
+	  <div class="add_match_popup">
+	    <span class="close">&times;</span>
+	    	<div class="form-group">
+	    	{{form.as_p}}
+	    	<button class="btn btn-success" id="submit_add_match">Add Match</button>
+	    	</div>
+	  </div>
+
+	</div>
+
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+	
+var $modal = $('#myModal');
+// Get the button that opens the modal
+var $btn = $("#add_match");
+
+var $btn_submit = $("#submit_add_match");
+// Get the <span> element that closes the modal
+var $span = $(".close");
+// When the user clicks the button, open the modal 
+
+
+// forms variable
+var $date_form = $('#id_match_date_0')
+var $time_form = $('#id_match_date_1')
+var $home_team = $('#id_home_team')
+var $away_team = $('#id_away_team')
+
+
+
+$btn.click(function() {
+    $modal.css("display","block") ;
+}); 
+// When the user clicks on <span> (x), close the modal
+$span.click(function(){
+	$modal.css("display","none") ;
+});
+
+
+$date_form.attr("type","date");
+$time_form.attr("type","time");
+
+
+var send_data = function(home_team_id, away_team_id, match_date, match_time){
+	$.ajax({
+		url: '/match/add',
+		type: 'POST',
+		data: {
+			home_team_id: home_team_id,
+			away_team_id: away_team_id,
+			match_date: match_date,
+			match_time: match_time,
+			csrfmiddlewaretoken : '{{ csrf_token }}',
+		},
+	})
+	.done(function() {
+		alert("Successfully added " + name)
+		$modal.css("display","none");
+		window.location.reload();
+		console.log("success");
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+
+		console.log("complete");
+	});
+
+}
+
+$btn_submit.click(function(){
+	
+	var date_value = $date_form.val();
+	var time_value = $time_form.val();
+
+	var home_team_id = $home_team.val();
+	var away_team_id = $away_team.val();
+
+	console.log(date_value);
+	console.log(time_value);
+	console.log(home_team_id);
+	console.log(away_team_id);
+
+	send_data(home_team_id, away_team_id, date_value, time_value);
+	});
+
+
+</script>
+
+{% endblock script %}

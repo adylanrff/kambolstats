@@ -4,10 +4,10 @@ from django.db import models
 
 class Team(models.Model):
     class Meta:
-        ordering = ['-points',]
+        ordering = ['-win',]
 
     # Stats
-    name = models.TextField()
+    name = models.CharField(max_length=100)
     points = models.IntegerField(default=0)
     goal_for = models.IntegerField(default=0)
     goal_against = models.IntegerField(default=0)
