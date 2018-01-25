@@ -6,7 +6,8 @@ class TeamForm(forms.ModelForm):
 	class Meta:
 		model = Team
 		fields = [
-			"name"
+			"name",
+			"logo",
 		]
 
 class MatchForm(forms.ModelForm):
@@ -28,4 +29,7 @@ class PlayerForm(forms.ModelForm):
 		fields = [
 			"NIM",
 			"name",
+			"team",
+			"ktm_photo",
+			"player_photo",
 		]

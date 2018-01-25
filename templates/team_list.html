@@ -41,7 +41,10 @@
 	  <div class="add_team_popup">
 	    <span class="close">&times;</span>
 	    	<div class="form-group">
-	    	{{form.as_p}}
+	    	<form method="POST" id="add_team_form" enctype="multipart/form-data">
+	    		{% csrf_token %}
+	    		{{form.as_p}}
+	    	</form>
 	    	<button class="btn btn-success" id="submit_add_team">Add team</button>
 	    	</div>
 	    </form>
@@ -77,15 +80,15 @@ $span.click(function(){
 
 
 
-
-var send_data = function(name){
+var send_data = function(data, name){
 	$.ajax({
 		url: '/teams/add',
 		type: 'POST',
-		data: {
-			name: name,
-			csrfmiddlewaretoken : '{{ csrf_token }}',
-		},
+		data: data,
+		cache:false,
+		processData: false,
+		contentType: false,
+		csrfmiddlewaretoken : '{{ csrf_token }}',
 	})
 	.done(function() {
 		alert("Successfully added " + name)
@@ -103,9 +106,9 @@ var send_data = function(name){
 }
 
 $btn_submit.click(function(){
-	
+	var data = new FormData($('form').get(0));
 	var name_value = $name.val();
-	send_data(name_value);
+	send_data(data, name_value);
 
 	});
 

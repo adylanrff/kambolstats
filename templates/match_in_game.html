@@ -4,9 +4,15 @@
 
 {% if match.available %}
 <div class="match_in_game">
+
       <div class="home_team_in_game">
         <div class="team_detail">
           <h1 class="text-center font-weight-bold">{{ home_team.name }}</h1>
+          <div class="img_container">
+          {% if home_team.logo %}
+          <img src="{{home_team.logo.url}}" class="team_logo mb-2"></img>
+          {% endif %}
+          </div>
        </div> 
 
         <div class="team_players">
@@ -69,11 +75,17 @@
 
 
       <h1 class="versus_text text-center mt-3 font-weight-bold">VS</h1>
-      <div class="away_team_in_game ">
+      
+      <div class="away_team_in_game">
         <div class="team_detail">
           <h1 class="text-center font-weight-bold">{{ away_team.name }}</h1>
-        </div>
-
+          <div class="img_container">
+          {% if away_team.logo %}
+          <img src="{{away_team.logo.url}}" class="team_logo"></img>
+          {% endif %}
+          </div>
+       </div> 
+        
         <div class="team_players">
           <table class="table table-dark text-center table-sm">
             <thead>

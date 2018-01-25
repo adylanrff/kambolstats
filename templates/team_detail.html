@@ -62,7 +62,10 @@
     <div class="add_match_popup">
       <span class="close">&times;</span>
         <div class="form-group">
+          <form method="POST" id="add_player_form" enctype="multipart/form-data">
+          {% csrf_token %}
           {{form.as_p}}
+          </form>
         <button class="btn btn-success" id="submit_add_player">Add Player</button>
         </div>
     </div>
@@ -85,7 +88,6 @@ var $name = $("#id_name");
 
 var $btn_submit = $("#submit_add_player")
 
-
 $btn.click(function() {
     $modal.css("display","block") ;
 }); 
@@ -94,18 +96,15 @@ $span.click(function(){
   $modal.css("display","none") ;
 });
 
-
-
-var send_data = function(nim,name,team_id){
+var send_data = function(data, nim,name,team_id){
   $.ajax({
-    url: '/players/add',
-    type: 'POST',
-    data: {
-      nim:nim,
-      name: name,
-      team_id : team_id,
+      url: '/players/add',
+      type: 'POST',
+      data: data,
+      cache:false,
+      processData: false,
+      contentType: false,
       csrfmiddlewaretoken : '{{ csrf_token }}',
-    },
   })
   .done(function() {
     alert("Successfully added " + name)
@@ -127,7 +126,9 @@ $btn_submit.click(function(){
   var name_value = $name.val();
   var team_id = {{team.id}}
 
-  send_data(NIM_value, name_value, team_id);
+  var data = new FormData($('form').get(0));
+
+  send_data(data, NIM_value, name_value, team_id);
 });
 
 

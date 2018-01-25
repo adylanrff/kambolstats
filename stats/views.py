@@ -73,10 +73,14 @@ class MatchInGameView(DetailView):
         return context
 
 def add_team(request):
-    if (request.method=='POST'):
-        name = request.POST['name']
-        Team.objects.create(name=name).save()
-
+    form = TeamForm(data = request.POST or None, files=request.FILES or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponse('')
+    else:
+        print(form.errors)
+        # name = request.POST['name']
+        # Team.objects.create(name=name).save()
     return HttpResponse('')
 
 def add_match(request):
@@ -96,15 +100,16 @@ def add_match(request):
     return HttpResponse('')
 
 def add_player(request):
-    if (request.method == 'POST'):
-        nim = request.POST['nim']
-        name = request.POST['name']
-        team_id = request.POST['team_id']
-        team = Team.objects.get(id=team_id)
-
-        Player.objects.create(NIM = nim, name = name, team = team)
-
+    form = PlayerForm(data = request.POST or None, files=request.FILES or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponse('')
+    else:
+        print(form.errors)
+        # name = request.POST['name']
+        # Team.objects.create(name=name).save()
     return HttpResponse('')
+
 
 def update_stats(request):
     if request.method == 'POST':

@@ -8,7 +8,7 @@ class Team(models.Model):
 
     # Stats
     name = models.CharField(max_length=100)
-    logo = models.ImageField(upload_to ='uploads/team/', null=True, blank=True)
+    logo = models.ImageField(null=True, blank=True)
     points = models.IntegerField(default=0)
     goal_for = models.IntegerField(default=0)
     goal_against = models.IntegerField(default=0)
