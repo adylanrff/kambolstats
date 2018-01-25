@@ -1,7 +1,7 @@
 /*base*/
 .main {
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 20px;
   width:100%;
 }
 
@@ -20,6 +20,7 @@
 }
 
 .btn_menu_match, .btn_menu_team {
+  padding:5px;
   grid-column: span 2;
 }
 /*----------------------*/
@@ -86,6 +87,17 @@
   grid-template-columns: repeat(12,1fr);
 }
 
+.team_logo {
+  display: block;
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.img_container {
+  grid-column: span 12;
+}
+
 .home_team_in_game {
   background: #e0f6ff;
   border: 1px solid #dfdfdf;
@@ -96,7 +108,6 @@
 }
 
 .versus_text {
-
   grid-column: span 12;
 }
 
