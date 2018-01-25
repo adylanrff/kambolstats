@@ -19,7 +19,7 @@
   min-height: 200px;
 }
 
-.btn_menu_scoreboard {
+.btn_menu_match, .btn_menu_team {
   grid-column: span 2;
 }
 /*----------------------*/
@@ -32,23 +32,108 @@
 }
 /*----------------------*/
 
+/*match list*/
+
+.match_list{
+  width:80%;
+  margin:0 auto;
+  margin-bottom: 10px;
+}
+
+
+.match_instance {
+  border: 1px solid #8f8f8f;
+  display:grid;
+  min-height: 150px;
+  grid-template-columns: repeat(5,1fr);
+}
+
+.home_team, .away_team {
+  background: #dfdfdf;
+  grid-column: span 2;
+}
+
+.separator{
+  min-height: 5px;
+  grid-column: span 5;
+}
+
+.add_match_popup {
+    z-index: -1;
+    background-color: #fefefe;
+    max-width: 450px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+}
+
 /*match in game*/
 .match_in_game {
+  margin:0 auto;
+  width:95%;
   display: grid;
   min-height: 500px;
   grid-template-columns: repeat(12,1fr);
 }
 
 
-.match_in_game .home_team, .match_in_game .away_team {
+.home_team_in_game, .away_team_in_game {
   padding :8px;
   min-height: 200px;
   height: 100%;
-  background: #d6dd2f;
   grid-column: span 12;
   display: grid;
   grid-template-columns: repeat(12,1fr);
 }
+
+.home_team_in_game {
+  background: #e0f6ff;
+  border: 1px solid #dfdfdf;
+}
+.away_team_in_game {
+  background: #ffe0e0;
+  border: 1px solid #dfdfdf;
+}
+
+.versus_text {
+
+  grid-column: span 12;
+}
+
+.head_to_head {
+  width:95%;
+  margin:0 auto;
+  background: #efefef;
+  display:grid;
+
+  grid-template-columns: repeat(5,1fr);
+}
+
+.head_to_head_title {
+  grid-column: span 5;
+}
+
+.home_stats, .away_stats {
+  background: #dfdfdf;
+  font-size: 24px;
+  grid-column: span 2;
+}
+
+.home_stats p, .away_stats p, .stats_type p{
+  border-bottom: 1px solid #afafaf;
+}
+
+.stats_type {
+  font-size: 24px;
+  background: #cfcfcf;
+}
+
+
+#end_game{
+  grid-column : span 5;
+  font-weight: bold;
+}
+/*------------------------------------*/
 
 
 /*Team List*/
@@ -57,8 +142,55 @@
   margin:0 auto;
 }
 
-
 .team_players {
   grid-column : span 12;
 }
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 0; /* Sit on top */
+    padding-top: 200px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.add_team_popup {
+    background-color: #fefefe;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/*team details*/
+.team_detail {
+  grid-column: span 12;
+  width:90%;
+  margin:0 auto;
+}
+
+
 

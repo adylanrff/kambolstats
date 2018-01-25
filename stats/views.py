@@ -352,8 +352,8 @@ def update_match_away(stat_type, operation, match_obj, match_update, value):
         value+= match_obj.pass_complete_away
         match_update.update(pass_complete_away=value)
 
-        pass_complete_away = match_obj.pass_complete_away
-        pass_complete_home = value
+        pass_complete_away = value
+        pass_complete_home = match_obj.pass_complete_home
 
         if (pass_complete_home+pass_complete_away>0):
             possession_home = pass_complete_home / (pass_complete_home+pass_complete_away) *100
@@ -454,7 +454,7 @@ def update_team_stat(stat_type, operation, home_team_id, away_team_id,side):
             home_team_update.update(goal_for=goal_for_home)
             away_team_update.update(goal_against= goal_against_away)
 
-def evaluate_match():
+def evaluate_match(request):
     if (request.method=='POST'):
         match_id = request.POST['match_id']
         home_team_id = request.POST['home_team_id']
@@ -464,12 +464,12 @@ def evaluate_match():
 
         match = Match.objects.filter(id = match_id)
 
-        home_team_obj = Team.objexts.get(id = home_team_id)
-        home_team_update = Team.objexts.get(id = home_team_id)
+        home_team_obj = Team.objects.get(id = home_team_id)
+        home_team_update = Team.objects.filter(id = home_team_id)
 
 
-        away_team_obj = Team.objexts.get(id = away_team_id)
-        away_team_update = Team.objexts.filter(id = away_team_id)
+        away_team_obj = Team.objects.get(id = away_team_id)
+        away_team_update = Team.objects.filter(id = away_team_id)
 
         match.update(available = False)
 
@@ -480,8 +480,9 @@ def evaluate_match():
             lose_away = away_team_obj.lose
             lose_away+=1
 
-            home_team.update(win = win_home)
-            away_team.update(lose = lose_away)
+            home_team_update.update(win = win_home)
+            away_team_update.update(lose = lose_away)
+
         elif (goal_home<goal_team):
             win_away = away_team_obj.win
             win_away+=1
@@ -489,14 +490,15 @@ def evaluate_match():
             lose_home = home_team_obj.lose
             lose_home+=1
 
-            home_team.update(lose = lose_home)
-            away_team.update(win = win_away)
+            home_team_update.update(lose = lose_home)
+            away_team_update.update(win = win_away)
         else:
             draw_home = home_team_obj.draw
             draw_away = away_team_obj.draw
             draw_home+=1
             draw_away+=1
 
-            home_team.update(draw = draw_home)
-            away_team.update(draw = draw_away)
+            home_team_update.update(draw = draw_home)
+            away_team_update.update(draw = draw_away)
 
+    return HttpResponse('')

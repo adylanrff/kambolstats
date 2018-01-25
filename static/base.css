@@ -1,7 +1,7 @@
 /*base*/
 .main {
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 20px;
   width:100%;
 }
 
@@ -19,7 +19,8 @@
   min-height: 200px;
 }
 
-.btn_menu_scoreboard {
+.btn_menu_match, .btn_menu_team {
+  padding:5px;
   grid-column: span 2;
 }
 /*----------------------*/

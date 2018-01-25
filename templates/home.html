@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="menu">
-    <a href="{% url 'scoreboard' %}" class=" btn_menu_scoreboard"><button class="btn menu_btn mb-2"> Scoreboard </button></a>
-    <a href="{% url 'match_list' %}" class="btn_menu_match"><button class="btn menu_btn mr-2"> Match </button></a>
-    <a href="{% url 'team_list' %}" class="btn_menu_team"><button class="btn menu_btn ml-2"> Teams </button></a>
+
+  <div class="menu p-5">
+    <a href="{% url 'match_list' %}" class="btn_menu_match"><button class="btn btn-primary  menu_btn mr-2 font-weight-bold" style="font-size: 1.5em"> MATCH </button></a>
+    <a href="{% url 'team_list' %}" class="btn_menu_team"><button class="btn btn-primary menu_btn ml-2 font-weight-bold" style="font-size: 1.5em"> TEAMS </button></a>
   </div>
 
 {% endblock content %}

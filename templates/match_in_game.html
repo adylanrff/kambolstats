@@ -196,7 +196,7 @@
         <p id ="head_to_head-yellow_card-away">{{match.yellow_card_away}}</p>
         <p id ="head_to_head-red_card-away">{{match.red_card_away}}</p>
       </div>
-
+      {% if match.available %}
       <button class="btn btn-danger ml-3 mt-3 p-3" id="end_game">End game</button>
     </div>
     
@@ -209,11 +209,14 @@
         You cannot modify the data for this match if you continue.
         Are you sure?</p>
 
-        <button class="btn btn-danger" id="submit_end_game" onclick="funEvaluate()">Yes, I am sure</button>
+        
+        <button class="btn btn-danger" id="submit_end_game">Yes, I am sure</button>
+
         </div>
     </div>
 
-  </div>
+    </div>
+  {% endif %}
 
 
 
@@ -317,7 +320,7 @@
           },
         })
         .done(function() {
-          alert("Successfully added " + name)
+          alert("Successfully ended the match");
           window.location.reload();
           console.log("success");
         })
@@ -330,17 +333,8 @@
         });
     }
 
-    function funEvaluate() {
-      var $goal_home = $("#head_to_head-goal-home");
-      var $goal_away = $("#head_to_head-goal-away");
-      var goal_home_value = parseInt($goal_home.text());
-      var goal_away_value = parseInt($goal_away.text());      
-      var match_id = {{match.id}}
-      var home_team_id = {{home_team.id}}
-      var away_team_id = {{away_team.id}}
 
-      evaluate_match(match_id,home_team_id,away_team_id,goal_home_value, goal_away_value);
-    }
+
     // $("#submit_end_game").click(function()){
     //     evaluate_match(match_id, home_team_id, away_team_id, goal_home_value, goal_away_value);
     
@@ -365,6 +359,18 @@
         
         
       });
+
+    $btn_submit.click(function(){    
+      var $goal_home = $("#head_to_head-goal-home");
+      var $goal_away = $("#head_to_head-goal-away");
+      var goal_home_value = parseInt($goal_home.text());
+      var goal_away_value = parseInt($goal_away.text());      
+      var match_id = {{match.id}}
+      var home_team_id = {{home_team.id}}
+      var away_team_id = {{away_team.id}}
+
+      evaluate_match(match_id,home_team_id,away_team_id,goal_home_value, goal_away_value);
+    });
   
    
   </script>
