@@ -7,7 +7,11 @@
   </div>
 
   <h1 class="text-center"> {{ team.name }}</h1>
-
+  <div class="img_container">
+    {% if team.logo %}
+    <img src="{{team.logo.url}}" class="team_logo mb-2"></img>
+    {% endif %}
+  </div>
   <table class="player_list table table-striped table-bordered table-sm">
 
     <thead class="thead-dark">
