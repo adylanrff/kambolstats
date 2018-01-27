@@ -14,6 +14,11 @@
       <tr>
         <td>NIM</td>
         <td>Name</td>
+        
+        <td>KTM</td>
+
+        <td>Photo</td>
+        
         <td>Goal</td>
         <td>PC</td>
         <td>PIC</td>
@@ -35,7 +40,16 @@
       <tr>
         <td>{{player.NIM}}</td>
         <td>{{player.name}}</td>
+
+        
+        <td>{% if player.ktm_photo %}<a href="{{player.ktm_photo.url}}">Link</a>{% endif %}</td>
+        
+        
+        
+        <td>{% if player.player_photo %}<a href="{{player.player_photo.url}}">Link</a>{% endif %}</td>
+        
         <td>{{player.goal}}</td>
+
         <td>{{player.pass_complete}}</td>
         <td>{{player.pass_incomplete}}</td>
         <td>{{player.shot_on_target}}</td>
