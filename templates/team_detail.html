@@ -9,7 +9,7 @@
   <h1 class="text-center"> {{ team.name }}</h1>
   <div class="img_container">
     {% if team.logo %}
-    <img src="{{team.logo.url}}" class="team_logo mb-2"></img>
+    <img src="{{team.logo.url}}" class="team_logo mb-2" alt="{{team.name}} logo"></img>
     {% endif %}
   </div>
   <table class="player_list table table-striped table-bordered table-sm">
@@ -50,7 +50,7 @@
         
         
         
-        <td>{% if player.player_photo %}<a href="{{player.player_photo.url}}" target="_blank">Link</a>{% endif %}</td>
+        <td>{% if player.player_photo %}<a href="{{player.player_photo.url}}" target="_blank" >Link</a>{% endif %}</td>
         
         <td>{{player.goal}}</td>
 
