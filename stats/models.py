@@ -69,9 +69,12 @@ class Player(models.Model):
 
     NIM = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
+    height = models.IntegerField(default=0)
+    weight = models.IntegerField(default=0)
     player_photo = models.ImageField(upload_to ='uploads/player/photo', null=True, blank=True)
     ktm_photo = models.ImageField(upload_to ='uploads/player/ktm', null=True, blank=True)
     team = models.ForeignKey(Team, related_name="team", on_delete=models.CASCADE, null=True)
+
 
     # Stats
     goal = models.IntegerField(default=0)

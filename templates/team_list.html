@@ -15,6 +15,7 @@
 	        <th>D</th>
 	        <th>GF</th>
 	        <th>GA</th>
+	        <th>Delete</th>
 	      </tr>
 	    </thead>
 
@@ -27,6 +28,7 @@
 	        <td>{{team.draw}}</td>
 	        <td>{{team.goal_for}}</td>
 	        <td>{{team.goal_against}}</td>
+	      <td><button class="btn btn-danger" id="delete-{{team.id}}">Delete</button></td>
 	      </tr>
 	      {% endfor %}
 	    </tbody>

@@ -110,6 +110,12 @@ def add_player(request):
         # Team.objects.create(name=name).save()
     return HttpResponse('')
 
+def delete_player(request):
+    if (request.method == 'POST'):
+        NIM = request.POST['nim_number']
+        Player.objects.filter(NIM = NIM).delete()
+
+    return HttpResponse('')
 
 def update_stats(request):
     if request.method == 'POST':

@@ -16,6 +16,7 @@ urlpatterns = [
     path('match/evaluate',views.evaluate_match),
     path('players/update/',views.update_stats),
     path('players/add',views.add_player, name='add_player'),
+    path('players/delete',views.delete_player, name='delete_player'),
 ]
 
 if settings.DEBUG:

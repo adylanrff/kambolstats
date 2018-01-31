@@ -16,13 +16,13 @@
 
     <thead class="thead-dark">
       <tr>
+        <td>Delete</td>
         <td>NIM</td>
         <td>Name</td>
-        
+        <td>Height</td>
+        <td>Weight</td>
         <td>KTM</td>
-
         <td>Photo</td>
-        
         <td>Goal</td>
         <td>PC</td>
         <td>PIC</td>
@@ -42,18 +42,17 @@
     <tbody>
       {% for player in player_list %}
       <tr>
+        <td><button class="btn btn-danger" id="delete-{{player.NIM}}">Delete</button></td>
         <td>{{player.NIM}}</td>
         <td>{{player.name}}</td>
+        <td>{{player.height}}</td>
+        <td>{{player.weight}}</td>
 
-        
         <td>{% if player.ktm_photo %}<a href="{{player.ktm_photo.url}}" target="_blank">Link</a>{% endif %}</td>
-        
-        
-        
+                
         <td>{% if player.player_photo %}<a href="{{player.player_photo.url}}" target="_blank" >Link</a>{% endif %}</td>
-        
-        <td>{{player.goal}}</td>
 
+        <td>{{player.goal}}</td>
         <td>{{player.pass_complete}}</td>
         <td>{{player.pass_incomplete}}</td>
         <td>{{player.shot_on_target}}</td>
@@ -77,7 +76,7 @@
 
 <div id="myModal" class="modal">
     <!-- Modal content -->
-    <div class="add_match_popup">
+    <div class="add_team_popup" style="display:none;" id="add_team_popup">
       <span class="close">&times;</span>
         <div class="form-group">
           <form method="POST" id="add_player_form" enctype="multipart/form-data">
@@ -88,31 +87,74 @@
         </div>
     </div>
 
+    <div class="delete_player_popup" style="display:none;" id="delete_player_popup">
+      <span class="close">&times;</span>
+        <div class="form-group">
+          <p>
+            Are you sure you want to delete the player?
+          </p>
+        <button class="btn btn-danger" id="confirm_delete_player">Delete Player</button>
+        </div>
+    </div>
   </div>
+
 {% endblock content %}
 
 {% block script %}
 <script>
+function getCookie(c_name) {
+    if(document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if(c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if(c_end == -1) c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start,c_end));
+        }
+    }
+    return "";
+}
+
+$(function () {
+    $.ajaxSetup({
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken")
+        }
+    });
+  });
 
 var $modal = $('#myModal');
 // Get the button that opens the modal
-var $btn = $("#add_player");
+var $add_team_popup = $("#add_team_popup");
+// Get the match popup
+var $delete_player_popup = $("#delete_player_popup");
+// Get the delete player popup
+var $btn_add_player = $("#add_player");
+// add player button
+
+// delete player button
 // close popup functionality
 var $span = $(".close");
-
 // form variables
 var $NIM = $("#id_NIM");
 var $name = $("#id_name");
 
 var $btn_submit = $("#submit_add_player")
+var $btn_delete = $("#confirm_delete_player")
 
-$btn.click(function() {
+$btn_add_player.click(function() {
     $modal.css("display","block") ;
+    $add_team_popup.css("display","block") ;
 }); 
 // When the user clicks on <span> (x), close the modal
 $span.click(function(){
   $modal.css("display","none") ;
+  $add_team_popup.css("display","none") ;
+  $delete_player_popup.css("display","none") ;
 });
+
+
+var csrfToken = '{{csrf_token}}';
 
 var send_data = function(data, nim,name,team_id){
   $.ajax({
@@ -122,7 +164,7 @@ var send_data = function(data, nim,name,team_id){
       cache:false,
       processData: false,
       contentType: false,
-      csrfmiddlewaretoken : '{{ csrf_token }}',
+      csrfmiddlewaretoken : getCookie("csrftoken"),
   })
   .done(function() {
     alert("Successfully added " + name)
@@ -139,6 +181,29 @@ var send_data = function(data, nim,name,team_id){
 
 }
 
+var delete_player = function(nim_number){
+  $.ajax({
+    url: '/players/delete',
+    type: 'POST',
+    data: {
+      nim_number : nim_number,  
+    },
+    csrfmiddlewaretoken : getCookie("csrftoken"),
+  })
+  .done(function() {
+    alert("Successfully deleted " + nim_number)
+    window.location.reload();
+    console.log("success");
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    $modal.css("display","none") ;  
+    console.log("complete");
+  });
+}
+
 $btn_submit.click(function(){
   var NIM_value = $NIM.val();
   var name_value = $name.val();
@@ -148,6 +213,17 @@ $btn_submit.click(function(){
 
   send_data(data, NIM_value, name_value, team_id);
 });
+
+$("button").click(function(){
+  var id = $(this).attr("id").split("-");
+
+  if (id[0]==="delete"){
+    var NIM= parseInt(id[1]); 
+    console.log(NIM);
+    delete_player(NIM);
+  }
+
+})
 
 
 </script>

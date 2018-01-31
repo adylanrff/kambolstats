@@ -29,6 +29,8 @@ class PlayerForm(forms.ModelForm):
 		fields = [
 			"NIM",
 			"name",
+			"height",
+			"weight",
 			"team",
 			"ktm_photo",
 			"player_photo",

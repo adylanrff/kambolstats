@@ -179,6 +179,13 @@
     padding: 20px;
     border: 1px solid #888;
 }
+.delete_player_popup {
+    background-color: #fefefe;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+}
 
 /* The Close Button */
 .close {
