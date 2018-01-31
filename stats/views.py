@@ -107,6 +107,13 @@ def add_match(request):
 
     return HttpResponse('')
 
+def delete_match(request):
+    if (request.method == 'POST'):
+        id = request.POST['id']
+        Match.objects.filter(id = id).delete()
+
+    return HttpResponse('')
+
 def add_player(request):
     form = PlayerForm(data = request.POST or None, files=request.FILES or None)
     if form.is_valid():

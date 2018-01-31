@@ -128,7 +128,7 @@ var send_data = function(data, name){
 
 }
 
-var delete_player = function(id){
+var delete_team = function(id){
   $.ajax({
     url: '/teams/delete',
     type: 'POST',
@@ -165,7 +165,7 @@ $("button").click(function(){
   if (id[0]==="delete"){
     var id= parseInt(id[1]); 
     console.log(id);
-    delete_player(id);
+    delete_team(id);
   }
 
 })
