@@ -83,6 +83,14 @@ def add_team(request):
         # Team.objects.create(name=name).save()
     return HttpResponse('')
 
+def delete_team(request):
+    if (request.method == 'POST'):
+        ID = request.POST['id']
+        Team.objects.filter(id = ID).delete()
+
+    return HttpResponse('')
+
+
 def add_match(request):
     if (request.method =='POST'):
         home_team_id = request.POST['home_team_id']
