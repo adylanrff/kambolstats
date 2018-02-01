@@ -18,6 +18,8 @@ urlpatterns = [
     path('match/', views.MatchListView.as_view(), name = 'match_list'),
     path('match/add', views.add_match),
     path('match/delete', views.delete_match),
+    path('match/start', views.start_timer),
+    path('match/stop', views.stop_timer),
     path('match/<int:pk>/ingame',views.MatchInGameView.as_view(), name ='match_in_game'),
     path('match/evaluate',views.evaluate_match),
     path('players/update/',views.update_stats),

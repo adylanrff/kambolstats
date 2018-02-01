@@ -157,15 +157,26 @@
       
     <div class="head_to_head mt-4 mb-4 p-2" id="head2head">
       
+     {% if match.available %}
       <div id="countup" class="countup_div text-center mb-3 bg-light">
           <span id="minutes" style="font-size: 50px;">00</span>
           <span class="h1" style="font-size: 50px;">:</span>
           <span id="seconds" style="font-size: 50px;">00</span>
+
           <br>
           {% if request.user.is_authenticated %}
-          <button class="btn btn-danger">Stop</button> <button class="btn btn-success">Start</button> 
+
+          {% if match.time_started %}
+          <button class="btn btn-danger" id="stop_timer">Stop</button> 
+          {% endif %}
+
+          {% if not match.time_started %}
+          <button class="btn btn-success" id="start_timer">Start</button> 
+          {% endif %}
+
           {% endif %}
         </div>
+      {% endif %}
 
       <h1 class="text-center font-weight-bold head_to_head_title">HEAD TO HEAD</h1>
       
@@ -249,6 +260,29 @@
 {% block script %}
   
   <script> 
+    // Count up timer
+    {% if match.time_started %}
+    window.onload=function() {
+      // Month,Day,Year,Hour,Minute,Second
+      upTime("{{match.match_time.isoformat}}"); // ****** Change this line!
+    }
+    function upTime(countTo) {
+        now = new Date();
+        countTo = new Date(countTo);
+        difference = (now-countTo);
+
+        mins=Math.floor(((difference % (60*1000*24))%(60*60*1000))/(60*1000)*1);
+        
+        secs=Math.floor((((difference %(60*60*1000*24))%(60*60*1000))%(60*1000))/1000*1);
+
+        document.getElementById('minutes').firstChild.nodeValue = mins;
+        document.getElementById('seconds').firstChild.nodeValue = secs;
+
+        clearTimeout(upTime.to);
+        upTime.to=setTimeout(function(){ upTime(countTo); },1000);
+    }
+    {% endif %}
+
     var $modal = $('#myModal');
     // Get the button that opens the modal
     var $btn = $("#end_game");
@@ -256,6 +290,11 @@
     var $btn_submit = $("#submit_end_game");
     // Get the <span> element that closes the modal
     var $span = $(".close");
+
+    // timer functionality
+    var $stop =$("#stop_timer");
+    var $start =$("#start_timer");
+
 
     $btn.click(function() {
         $modal.css("display","block") ;
@@ -357,11 +396,75 @@
     }
 
 
+    var start_timer = function(){
+       $.ajax({
+          url: '/match/start',
+          type: 'POST',
+          data: {
+            match_id : {{match.id}},
+            csrfmiddlewaretoken : '{{ csrf_token }}',
+          },
+        })
+        .done(function() {
+          window.location.reload();
+          console.log("success");
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        .always(function() {
+          $modal.css("display","none") ;  
+          console.log("complete");
+        });
+    }
 
-    // $("#submit_end_game").click(function()){
-    //     evaluate_match(match_id, home_team_id, away_team_id, goal_home_value, goal_away_value);
-    
-    // }
+    var stop_timer = function(){
+      $.ajax({
+          url: '/match/stop',
+          type: 'POST',
+          data: {
+            match_id : {{match.id}},
+            csrfmiddlewaretoken : '{{ csrf_token }}',
+          },
+        })
+        .done(function() {
+          window.location.reload();
+          console.log("success");
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        .always(function() {
+          $modal.css("display","none") ;  
+          console.log("complete");
+        }); 
+    }
+
+    $start.click(function(){
+      var now = new Date();
+      console.log(now);
+      var year = now.getFullYear();
+      var month = now.getMonth();
+      var date = now.getDate();
+      var hour = now.getHours();
+      var minute = now.getMinutes();
+      var second = now.getSeconds();
+
+
+      console.log(year);
+      console.log(month);
+      console.log(date);
+      console.log(hour);
+      console.log(minute);
+      console.log(second);
+
+
+      start_timer();
+    })
+
+    $stop.click(function(){
+      stop_timer();
+    })
 
     $("button").click(function() {
         var id = $(this).attr("id").split("-");
@@ -374,9 +477,7 @@
         var home_team_id = {{home_team.id}}
         var away_team_id = {{away_team.id}}
 
-
-
-        if (id!="end_game" && id!="submit_end_game"){
+        if (id!="end_game" && id!="submit_end_game" && id!="start_timer" && id!="stop_timer"){
           send_data(nim_number,type,operator,side,match_id,home_team_id, away_team_id);    
         } 
         

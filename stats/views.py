@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils import timezone
 from django.views.generic import ListView, TemplateView, DetailView
 from django.views.generic.edit import FormMixin
 from django.http import HttpResponse
@@ -528,3 +529,22 @@ def evaluate_match(request):
             away_team_update.update(draw = draw_away)
 
     return HttpResponse('')
+
+def start_timer(request):
+    if (request.method == "POST"):
+        match_id = request.POST['match_id']
+        now = timezone.now()
+
+        Match.objects.filter(id = match_id).update(match_time = now, time_started = True)
+
+    return HttpResponse('')
+
+def stop_timer(request):
+    if (request.method == "POST"):
+        match_id = request.POST['match_id']
+        now = timezone.now()
+
+        Match.objects.filter(id = match_id).update(match_time = now, time_started = False)
+
+    return HttpResponse('')
+
