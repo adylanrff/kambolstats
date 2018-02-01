@@ -19,6 +19,7 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+
 class Match(models.Model):
     class Meta:
         ordering = ['-match_date',]
@@ -26,8 +27,10 @@ class Match(models.Model):
     match_date = models.DateTimeField()
     home_team = models.ForeignKey(Team, related_name="home_team", on_delete=models.CASCADE, null=True)
     away_team = models.ForeignKey(Team, related_name="away_team", on_delete=models.CASCADE, null=True)
-    available = models.BooleanField()
+    time_started = models.BooleanField(default=False)
+    match_time = models.DateTimeField(auto_now_add=True)
     
+    available = models.BooleanField()
     # home
     goal_home = models.IntegerField(default=0)
     pass_complete_home = models.IntegerField(default=0)

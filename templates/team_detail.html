@@ -16,7 +16,9 @@
 
     <thead class="thead-dark">
       <tr>
+        {% if request.user.is_authenticated %}
         <td>Delete</td>
+        {% endif %}
         <td>NIM</td>
         <td>Name</td>
         <td>Height</td>
@@ -42,7 +44,9 @@
     <tbody>
       {% for player in player_list %}
       <tr>
+        {% if request.user.is_authenticated %}
         <td><button class="btn btn-danger" id="delete-{{player.NIM}}">Delete</button></td>
+        {% endif %}
         <td>{{player.NIM}}</td>
         <td>{{player.name}}</td>
         <td>{{player.height}}</td>
@@ -68,9 +72,10 @@
       </tr>
 
       {% endfor %}
-      <!-- <button>DELETE</button> -->
     </tbody>
   </table>
+
+{% if request.user.is_authenticated %}
 <button class="btn btn-primary float-right p-2" id="add_player">Add Player</button>
 </div>
 
@@ -97,6 +102,7 @@
         </div>
     </div>
   </div>
+  {% endif %}
 
 {% endblock content %}
 

@@ -120,6 +120,11 @@
   grid-template-columns: repeat(5,1fr);
 }
 
+
+.countup_div {
+  grid-column: span 5;
+}
+
 .head_to_head_title {
   grid-column: span 5;
 }
@@ -211,4 +216,7 @@
 }
 
 
-
+.login {
+  width:100%;
+  margin:0 auto;
+}

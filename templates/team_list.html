@@ -15,7 +15,9 @@
 	        <th>D</th>
 	        <th>GF</th>
 	        <th>GA</th>
+	        {% if request.user.is_authenticated %}
 	        <th>Delete</th>
+	        {% endif %}
 	      </tr>
 	    </thead>
 
@@ -28,7 +30,10 @@
 	        <td>{{team.draw}}</td>
 	        <td>{{team.goal_for}}</td>
 	        <td>{{team.goal_against}}</td>
+	        {% if request.user.is_authenticated %}
 	      <td><button class="btn btn-danger" id="delete-{{team.id}}">Delete</button></td>
+	      	{% endif %}
+
 	      </tr>
 	      {% endfor %}
 	    </tbody>
@@ -36,6 +41,9 @@
   
   </div>
 
+
+
+{% if request.user.is_authenticated %}
 <button class="btn btn-primary float-right" id="add_team">Add Team</button>
 
 	<div id="myModal" class="modal">
@@ -49,10 +57,10 @@
 	    	</form>
 	    	<button class="btn btn-success" id="submit_add_team">Add team</button>
 	    	</div>
-	    </form>
 	  </div>
 
 	</div>
+{% endif %}
 
 </div>
 
@@ -138,7 +146,7 @@ var delete_team = function(id){
     csrfmiddlewaretoken : getCookie("csrftoken"),
   })
   .done(function() {
-    alert("Successfully deleted " + id)
+    alert("Successfully deleted ")
     window.location.reload();
     console.log("success");
   })

@@ -14,13 +14,17 @@
 	      	</div>
 
 	      	<div class="match_date text-center bg-light">
+	      	
 	      	<br>
 	      	<br>
+
 	      	<h2>VS</h2>
 	      	<br>
 
 	      	<p>{{match.match_date}}</p>
+	      	
 	      	<a href="{% url 'match_in_game' match.pk %}"> Match details >></a>
+	      	<br>
 	      	<br>
 	      	<button class="btn btn-danger" id="delete-{{match.id}}">Delete</button>
 	        </div>	
@@ -36,6 +40,7 @@
 
   	</div>
 
+	{% if request.user.is_authenticated %}
 	<button class="btn btn-primary float-right mt-3 mb-3 p-3" id="add_match">Add Match</button>
 
 	<div id="myModal" class="modal">
@@ -49,6 +54,7 @@
 	  </div>
 
 	</div>
+	{% endif %}
 
 </div>
 {% endblock content %}
@@ -145,7 +151,7 @@ var delete_match = function(id){
     csrfmiddlewaretoken : getCookie("csrftoken"),
   })
   .done(function() {
-    alert("Successfully deleted " + id)
+    alert("Successfully deleted ")
     window.location.reload();
     console.log("success");
   })
@@ -157,13 +163,6 @@ var delete_match = function(id){
     console.log("complete");
   });
 }
-
-$btn_submit.click(function(){
-	var data = new FormData($('form').get(0));
-	var name_value = $name.val();
-	send_data(data, name_value);
-
-	});
 
 $btn_submit.click(function(){
 	
