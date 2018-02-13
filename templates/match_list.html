@@ -26,7 +26,11 @@
 	      	<a href="{% url 'match_in_game' match.pk %}"> Match details >></a>
 	      	<br>
 	      	<br>
+
+	      	{% if request.user.is_authenticated %}
 	      	<button class="btn btn-danger" id="delete-{{match.id}}">Delete</button>
+	        {% endif %}
+
 	        </div>	
 
 	        <div class="away_team text-center p-2">
