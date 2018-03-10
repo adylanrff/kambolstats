@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.utils import timezone
-from django.views.generic import ListView, TemplateView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, TemplateView, DetailView, UpdateView
 from django.views.generic.edit import FormMixin
 from django.http import HttpResponse
 from .models import Player, Team, Match
@@ -52,6 +53,12 @@ class TeamDetailView(DetailView):
         context['form'] = PlayerForm
         return context
 
+class PlayerUpdate(UpdateView):
+    model = Player
+    context_object_name = 'player'
+    template_name = 'player_edit.html'
+    fields = ['NIM','name','player_number','height','weight']
+    success_url = reverse_lazy('team_list')
 
 class MatchListView(FormListView):
     form_class = MatchForm

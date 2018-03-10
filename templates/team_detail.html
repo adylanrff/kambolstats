@@ -17,9 +17,10 @@
     <thead class="thead-dark">
       <tr>
         {% if request.user.is_authenticated %}
-        <td>Delete</td>
+        <td></td>
         {% endif %}
         <td>NIM</td>
+        <td>Number</td>
         <td>Name</td>
         <td>Height</td>
         <td>Weight</td>
@@ -45,9 +46,11 @@
       {% for player in player_list %}
       <tr>
         {% if request.user.is_authenticated %}
-        <td><button class="btn btn-danger" id="delete-{{player.NIM}}">Delete</button></td>
+        <td><button class="btn btn-danger" id="delete-{{player.NIM}}">Delete</button>
+        <a href="{% url 'edit_player' player.pk %}">  <button class="btn btn-primary">Edit</button></td> </a>
         {% endif %}
         <td>{{player.NIM}}</td>
+        <td>{{player.player_number}}</td>
         <td>{{player.name}}</td>
         <td>{{player.height}}</td>
         <td>{{player.weight}}</td>

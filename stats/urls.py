@@ -13,7 +13,7 @@ urlpatterns = [
     path('scoreboard/',views.ScoreboardView.as_view(),name='scoreboard'),
     path('teams/',views.TeamListView.as_view(),name='team_list'),
     path('teams/add',views.add_team, name='add_team'),
-    path('teams/delete',views.delete_team, name='add_team'),
+    path('teams/delete',views.delete_team, name='delete_team'),
     path('teams/<int:pk>/',views.TeamDetailView.as_view(), name = 'team_detail'),
     path('match/', views.MatchListView.as_view(), name = 'match_list'),
     path('match/add', views.add_match),
@@ -24,6 +24,7 @@ urlpatterns = [
     path('match/evaluate',views.evaluate_match),
     path('players/update/',views.update_stats),
     path('players/add',views.add_player, name='add_player'),
+    path('players/<int:pk>/edit',views.PlayerUpdate.as_view(), name='edit_player'),
     path('players/delete',views.delete_player, name='delete_player'),
 ]
 
